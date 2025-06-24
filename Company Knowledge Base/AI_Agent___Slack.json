@@ -1,0 +1,278 @@
+{
+  "name": "AI Agent - Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "trigger": [
+          "any_event",
+          "app_mention",
+          "file_public",
+          "file_share",
+          "message",
+          "channel_created"
+        ],
+        "watchWorkspace": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        20
+      ],
+      "id": "631d34a9-553c-4eec-ad91-83809f0f6454",
+      "name": "Slack Event Trigger",
+      "webhookId": "27c80b06-1061-428d-a9d2-d49bab7aed88",
+      "credentials": {
+        "slackApi": {
+          "id": "39e9cSRc5ckQPIf4",
+          "name": "Slack account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "condition-id-1",
+              "leftValue": "={{ $json?.bot_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "condition-id-2",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "message",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -520,
+        20
+      ],
+      "id": "bc208fc9-0ff7-4590-83e6-430d51347960",
+      "name": "Filter: Human Messages"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -92,
+        420
+      ],
+      "id": "451dfcae-923e-4ddb-b889-462866d42b84",
+      "name": "Generate Query Embeddings",
+      "credentials": {
+        "openAiApi": {
+          "id": "eObRBOQuEeU8yp2W",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "documents",
+        "toolDescription": "Work with your data in Supabase Vector Store",
+        "tableName": {
+          "__rl": true,
+          "value": "Company Knowledge Base",
+          "mode": "list",
+          "cachedResultName": "Company Knowledge Base"
+        },
+        "topK": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        -180,
+        222.5
+      ],
+      "id": "bacc4d5c-547c-4497-a195-7d676e16b122",
+      "name": "Vector Store Lookup",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Gpk6j81K7PJUCxz5",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -300,
+        220
+      ],
+      "id": "285e36ec-c5a3-4aa7-a39f-eeddbbdc6c83",
+      "name": "Language Model Inference",
+      "credentials": {
+        "openAiApi": {
+          "id": "eObRBOQuEeU8yp2W",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.blocks[0].elements[0].elements[0].text }}",
+        "options": {
+          "systemMessage": "You're an internal company knowledge assistants. Your job is to answer questions using the files in the Vector Database. Here's how to do it:\n\nCheck Vector Database First\n- Search for similar test chunks using RAG.\n- If you find matches, use them to answer the question. \n- If you find relevant matches and need additional context to support the answer, prioritize retrieving it from documents that share the same metadata \"file_id\" & \"title\" before exploring other sources.\"\n\nNo Answer Found?\n- Clearly say: \"I couldn't find this in the databases\"\n- Never guess or invent answers.\n\nExample Response:\n\"Netflix grew revenue in Streaming services by 20% in 2024.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -284,
+        0
+      ],
+      "id": "72f6f983-6fc3-4145-816f-2a22267c40c3",
+      "name": "RAG Orchestrator"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C08UZ8VRXMZ",
+          "mode": "list",
+          "cachedResultName": "all-project-test"
+        },
+        "text": "={{ $json.output }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        100,
+        20
+      ],
+      "id": "93267d28-9ff9-48db-b1a1-917fc483ecae",
+      "name": "Slack Response Sender",
+      "webhookId": "REDACTED_WEBHOOK_ID_2",
+      "credentials": {
+        "slackApi": {
+          "id": "39e9cSRc5ckQPIf4",
+          "name": "Slack account 5"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Slack Event Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter: Human Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: Human Messages": {
+      "main": [
+        [
+          {
+            "node": "RAG Orchestrator",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Generate Query Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Vector Store Lookup",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Lookup": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG Orchestrator",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Language Model Inference": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RAG Orchestrator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RAG Orchestrator": {
+      "main": [
+        [
+          {
+            "node": "Slack Response Sender",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2e66f1a3-3576-4d6b-8960-700f63210575",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "003fc5b17818334f1765cd295235e89bef66e7343997300f7f86487be08a4228"
+  },
+  "id": "CX7rzYpShWhsIRiq",
+  "tags": []
+}
