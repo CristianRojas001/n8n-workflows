@@ -1,0 +1,41 @@
+name: Deploy n8n Workflows
+
+# Trigger on pushes to main
+on:
+  push:
+    branches:
+      - main
+    workflow_dispatch:  
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install n8n CLI
+        run: npm install -g n8n
+
+      - name: Import workflows into n8n
+        env:
+          N8N_API_URL: ${{ secrets.N8N_API_URL }}
+          N8N_AUTH_TOKEN: ${{ secrets.N8N_AUTH_TOKEN }}
+        run: |
+          echo "Importing workflows from workflows.ndjson into $N8N_API_URL"
+          # Configure the CLI with your endpoint & token
+          n8n config:set N8N_API_URL "$N8N_API_URL"
+          n8n config:set N8N_AUTH_TOKEN "$N8N_AUTH_TOKEN"
+          # Only run import if the export file exists
+          if [ -f workflows.ndjson ]; then
+            n8n import:workflow --input=workflows.ndjson
+          else
+            echo "No workflows.ndjson file found—skipping import"
+          fi
+
+
