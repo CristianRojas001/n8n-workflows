@@ -1,15 +1,19 @@
 name: Deploy n8n Workflows
 
-# Trigger on pushes to main
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch: 
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   import:
     runs-on: ubuntu-latest
+
+    # make the secrets available to every step
+    env:
+      N8N_API_URL: ${{ secrets.N8N_API_URL }}
+      N8N_AUTH_TOKEN: ${{ secrets.N8N_AUTH_TOKEN }}
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -22,25 +26,34 @@ jobs:
       - name: Install n8n CLI
         run: npm install -g n8n
 
+      # optional install of jq if you hit a "jq not found" error
+      - name: Install jq (if needed)
+        run: |
+          if ! command -v jq >/dev/null; then
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+
+      - name: Check n8n API health
+        run: |
+          echo "🔗 Pinging n8n API at $N8N_API_URL/rest/version..."
+          HTTP_STATUS=$(curl --write-out "%{http_code}" --silent --output /dev/null "$N8N_API_URL/rest/version")
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "❌ n8n API returned HTTP $HTTP_STATUS" >&2
+            exit 1
+          fi
+
       - name: Lint workflows JSON
         run: |
-          echo "🔍 Checking workflows.ndjson is valid JSON..."
+          echo "🔍 Validating workflows.ndjson…"
           jq -s . workflows.ndjson > /dev/null
 
       - name: Import workflows into n8n
-        env:
-          N8N_API_URL: ${{ secrets.N8N_API_URL }}
-          N8N_AUTH_TOKEN: ${{ secrets.N8N_AUTH_TOKEN }}
         run: |
-          echo "Importing workflows from workflows.ndjson into $N8N_API_URL"
-          # Configure the CLI with your endpoint & token
+          echo "🚀 Importing workflows from workflows.ndjson into $N8N_API_URL"
           n8n config:set N8N_API_URL "$N8N_API_URL"
           n8n config:set N8N_AUTH_TOKEN "$N8N_AUTH_TOKEN"
-          # Only run import if the export file exists
           if [ -f workflows.ndjson ]; then
-            n8n import:workflow --input=workflows.ndjson
+            n8n import:workflow --input workflows.ndjson
           else
-            echo "No workflows.ndjson file found—skipping import"
+            echo "⚠️  No workflows.ndjson file found—skipping import"
           fi
-
-
