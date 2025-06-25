@@ -22,6 +22,11 @@ jobs:
       - name: Install n8n CLI
         run: npm install -g n8n
 
+      - name: Lint workflows JSON
+        run: |
+          echo "🔍 Checking workflows.ndjson is valid JSON..."
+          jq -s . workflows.ndjson > /dev/null
+
       - name: Import workflows into n8n
         env:
           N8N_API_URL: ${{ secrets.N8N_API_URL }}
