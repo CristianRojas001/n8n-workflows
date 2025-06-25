@@ -9,7 +9,7 @@ jobs:
   import:
     runs-on: ubuntu-latest
 
-    # make the secrets available to every step
+    # ← Make secrets available to ALL steps
     env:
       N8N_API_URL: ${{ secrets.N8N_API_URL }}
       N8N_AUTH_TOKEN: ${{ secrets.N8N_AUTH_TOKEN }}
@@ -26,17 +26,10 @@ jobs:
       - name: Install n8n CLI
         run: npm install -g n8n
 
-      # optional install of jq if you hit a "jq not found" error
-      - name: Install jq (if needed)
-        run: |
-          if ! command -v jq >/dev/null; then
-            sudo apt-get update && sudo apt-get install -y jq
-          fi
-
       - name: Check n8n API health
         run: |
-          echo "🔗 Pinging n8n API at $N8N_API_URL/rest/version..."
-          HTTP_STATUS=$(curl --write-out "%{http_code}" --silent --output /dev/null "$N8N_API_URL/rest/version")
+          echo "🔗 Pinging n8n API at $N8N_API_URL/rest/version"
+          HTTP_STATUS=$(curl -o /dev/null -s -w "%{http_code}" "$N8N_API_URL/rest/version")
           if [ "$HTTP_STATUS" -ne 200 ]; then
             echo "❌ n8n API returned HTTP $HTTP_STATUS" >&2
             exit 1
@@ -44,14 +37,12 @@ jobs:
 
       - name: Lint workflows JSON
         run: |
-          echo "🔍 Validating workflows.ndjson…"
+          echo "🔍 Validating workflows.ndjson"
           jq -s . workflows.ndjson > /dev/null
 
       - name: Import workflows into n8n
         run: |
-          echo "🚀 Importing workflows from workflows.ndjson into $N8N_API_URL"
-          n8n config:set N8N_API_URL "$N8N_API_URL"
-          n8n config:set N8N_AUTH_TOKEN "$N8N_AUTH_TOKEN"
+          echo "🚀 Importing workflows.ndjson into $N8N_API_URL"
           if [ -f workflows.ndjson ]; then
             n8n import:workflow --input workflows.ndjson
           else
