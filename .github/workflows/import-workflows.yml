@@ -22,7 +22,6 @@ jobs:
         with:
           node-version: '18'
 
-      # ← THIS STEP MUST INSTALL THE MATCHING CLI VERSION
       - name: Install n8n CLI (v1.84.3)
         run: npm install -g n8n@1.84.3
 
