@@ -8,8 +8,6 @@ on:
 jobs:
   import:
     runs-on: ubuntu-latest
-
-    # ← Make secrets available to ALL steps
     env:
       N8N_API_URL: ${{ secrets.N8N_API_URL }}
       N8N_BASIC_AUTH_USER: ${{ secrets.N8N_BASIC_AUTH_USER }}
@@ -29,15 +27,15 @@ jobs:
 
       - name: Check n8n API health
         run: |
-          echo "🔗 Pinging n8n API at $N8N_API_URL/rest/version"
+          echo "🔗 Pinging n8n at $N8N_API_URL/"
           HTTP_STATUS=$(
             curl -u "$N8N_BASIC_AUTH_USER:$N8N_BASIC_AUTH_PASSWORD" \
                  -o /dev/null -s -w "%{http_code}" \
-                 "$N8N_API_URL/rest/version"
+                 "$N8N_API_URL/"
           )
           echo "– HTTP status: $HTTP_STATUS"
           if [ "$HTTP_STATUS" -ne 200 ]; then
-            echo "❌ n8n API returned HTTP $HTTP_STATUS" >&2
+            echo "❌ n8n returned HTTP $HTTP_STATUS" >&2
             exit 1
           fi
 
@@ -56,5 +54,5 @@ jobs:
               --user "$N8N_BASIC_AUTH_USER" \
               --password "$N8N_BASIC_AUTH_PASSWORD"
           else
-            echo "⚠️  No workflows.ndjson file found—skipping import"
+            echo "⚠️ No workflows.ndjson found—skipping import"
           fi
