@@ -22,9 +22,6 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install n8n CLI (pinned to 1.84.3)
-        run: npm install -g n8n@1.84.3
-
       - name: Check n8n API health
         run: |
           echo "🔗 Pinging n8n at $N8N_API_URL/"
@@ -44,11 +41,12 @@ jobs:
           echo "🔍 Validating workflows.ndjson"
           jq -s . workflows.ndjson > /dev/null
 
-      - name: Import workflows into n8n
+      - name: Import workflows into n8n (using v1.84.3 CLI)
         run: |
           echo "🚀 Importing workflows.ndjson into $N8N_API_URL"
           if [ -f workflows.ndjson ]; then
-            n8n import:workflow \
+            # Use npx to pull exactly v1.84.3 and ensure the --endpoint/--user/--password flags exist
+            npx n8n@1.84.3 import:workflow \
               --input workflows.ndjson \
               --endpoint "$N8N_API_URL" \
               --user "$N8N_BASIC_AUTH_USER" \
