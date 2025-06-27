@@ -22,15 +22,15 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install n8n CLI
-        run: npm install -g n8n
+      - name: Install n8n CLI (pinned to 1.84.3)
+        run: npm install -g n8n@1.84.3
 
       - name: Check n8n API health
         run: |
           echo "🔗 Pinging n8n at $N8N_API_URL/"
           HTTP_STATUS=$(
             curl -u "$N8N_BASIC_AUTH_USER:$N8N_BASIC_AUTH_PASSWORD" \
-                 -o /dev/null -s -w "%{http_code}" \
+                 -s -o /dev/null -w "%{http_code}" \
                  "$N8N_API_URL/"
           )
           echo "– HTTP status: $HTTP_STATUS"
