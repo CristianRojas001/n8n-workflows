@@ -12,7 +12,8 @@ jobs:
     # ← Make secrets available to ALL steps
     env:
       N8N_API_URL: ${{ secrets.N8N_API_URL }}
-      N8N_AUTH_TOKEN: ${{ secrets.N8N_AUTH_TOKEN }}
+      N8N_BASIC_AUTH_USER: ${{ secrets.N8N_BASIC_AUTH_USER }}
+      N8N_BASIC_AUTH_PASSWORD: ${{ secrets.N8N_BASIC_AUTH_PASSWORD }}
 
     steps:
       - name: Check out code
@@ -29,7 +30,12 @@ jobs:
       - name: Check n8n API health
         run: |
           echo "🔗 Pinging n8n API at $N8N_API_URL/rest/version"
-          HTTP_STATUS=$(curl -o /dev/null -s -w "%{http_code}" "$N8N_API_URL/rest/version")
+          HTTP_STATUS=$(
+            curl -u "$N8N_BASIC_AUTH_USER:$N8N_BASIC_AUTH_PASSWORD" \
+                 -o /dev/null -s -w "%{http_code}" \
+                 "$N8N_API_URL/rest/version"
+          )
+          echo "– HTTP status: $HTTP_STATUS"
           if [ "$HTTP_STATUS" -ne 200 ]; then
             echo "❌ n8n API returned HTTP $HTTP_STATUS" >&2
             exit 1
@@ -44,7 +50,11 @@ jobs:
         run: |
           echo "🚀 Importing workflows.ndjson into $N8N_API_URL"
           if [ -f workflows.ndjson ]; then
-            n8n import:workflow --input workflows.ndjson
+            n8n import:workflow \
+              --input workflows.ndjson \
+              --endpoint "$N8N_API_URL" \
+              --user "$N8N_BASIC_AUTH_USER" \
+              --password "$N8N_BASIC_AUTH_PASSWORD"
           else
             echo "⚠️  No workflows.ndjson file found—skipping import"
           fi
