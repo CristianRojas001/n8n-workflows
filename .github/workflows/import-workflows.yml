@@ -8,9 +8,14 @@ on:
 jobs:
   import:
     runs-on: ubuntu-latest
+
     env:
-      N8N_API_URL:             ${{ secrets.N8N_API_URL }}
-      N8N_BASIC_AUTH_USER:     ${{ secrets.N8N_BASIC_AUTH_USER }}
+      # Your ngrok or public URL for n8n
+      N8N_API_URL:           ${{ secrets.N8N_API_URL }}
+      # API key you generated in the n8n UI
+      N8N_API_KEY:           ${{ secrets.N8N_API_KEY }}
+      # (Optional) keep Basic Auth for health-check
+      N8N_BASIC_AUTH_USER:   ${{ secrets.N8N_BASIC_AUTH_USER }}
       N8N_BASIC_AUTH_PASSWORD: ${{ secrets.N8N_BASIC_AUTH_PASSWORD }}
 
     steps:
@@ -44,43 +49,31 @@ jobs:
           echo "🔍 Validating workflows.ndjson"
           jq -s . workflows.ndjson > /dev/null
 
-      - name: Debug & test import via HTTP API
+      - name: Import workflows via HTTP API
         run: |
-          AUTH="$N8N_BASIC_AUTH_USER:$N8N_BASIC_AUTH_PASSWORD"
+          echo "🚀 Importing workflows.ndjson into $N8N_API_URL via REST"
+          echo "🔑 Using API key authentication"
 
-          echo "🔍 1) Checking workflows.ndjson file"
-          ls -l workflows.ndjson || { echo "❌ workflows.ndjson not found"; exit 1; }
-          head -n3 workflows.ndjson
-          echo
+          AUTH_HEADER="X-N8N-API-KEY: $N8N_API_KEY"
 
-          echo "🔍 2) Testing which list endpoint works"
-          for ep in "/api/v1/workflows" "/rest/workflows"; do
-            STATUS=$(
-              curl -u "$AUTH" -s -o /dev/null -w "%{http_code}" \
-                   "$N8N_API_URL$ep"
+          while IFS= read -r wf; do
+            name=$(echo "$wf" | jq -r .name)
+            echo "👉 Importing workflow: $name"
+
+            # Stream the JSON into curl to avoid argument limits:
+            HTTP_STATUS=$(
+              echo "$wf" | \
+              curl -s -o /dev/null -w "%{http_code}" \
+                -H "Content-Type: application/json" \
+                -H "$AUTH_HEADER" \
+                -X POST "$N8N_API_URL/api/v1/workflows" \
+                --data-binary @-
             )
-            echo "   GET $ep → HTTP $STATUS"
-          done
-          echo
 
-          echo "🔍 3) Attempting to import the _first_ workflow via each path"
-          FIRST_WF=$(head -n1 workflows.ndjson)
-
-          echo "   → POST /api/v1/workflows"
-          RESPONSE=$(
-            curl -u "$AUTH" -s -w "\n%{http_code}" \
-                 -H "Content-Type: application/json" \
-                 -X POST "$N8N_API_URL/api/v1/workflows" \
-                 -d "$FIRST_WF"
-          )
-          echo "$RESPONSE"
-          echo
-
-          echo "   → POST /rest/workflows"
-          RESPONSE2=$(
-            curl -u "$AUTH" -s -w "\n%{http_code}" \
-                 -H "Content-Type: application/json" \
-                 -X POST "$N8N_API_URL/rest/workflows" \
-                 -d "$FIRST_WF"
-          )
-          echo "$RESPONSE2"
+            if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+              echo "✅ OK (HTTP $HTTP_STATUS)"
+            else
+              echo "❌ Failed importing '$name' (HTTP $HTTP_STATUS)" >&2
+              exit 1
+            fi
+          done < workflows.ndjson
