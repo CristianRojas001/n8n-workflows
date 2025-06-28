@@ -30,6 +30,9 @@ jobs:
       - name: Install n8n CLI (v1.84.3)
         run: npm install -g n8n@1.84.3
 
+      - name: Debug show N8N_API_URL
+        run: echo "→ CI is targeting: $N8N_API_URL"
+
       - name: Check n8n API health
         run: |
           echo "🔗 Pinging n8n at $N8N_API_URL/"
