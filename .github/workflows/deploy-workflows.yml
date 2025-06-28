@@ -32,28 +32,29 @@ jobs:
       - name: Import workflows via HTTP API
         run: |
           echo "🚀 Importing workflows.ndjson into $N8N_API_URL/rest/workflows"
-          # Loop over each line (each workflow)
+          AUTH_HEADER="X-N8N-API-KEY: $N8N_API_KEY"
           while IFS= read -r wf; do
             name=$(echo "$wf" | jq -r .name)
             echo "👉 $name"
-            HTTP_STATUS=$(
+            status=$(
               echo "$wf" | \
-              curl -u "$N8N_BASIC_AUTH_USER:$N8N_BASIC_AUTH_PASSWORD" \
-                   -s -o /dev/null -w "%{http_code}" \
+              curl -s -o /dev/null -w "%{http_code}" \
                    -H "Content-Type: application/json" \
+                   -H "$AUTH_HEADER" \
                    -X POST "$N8N_API_URL/rest/workflows" \
                    --data-binary @-
             )
-            echo "   ↳ HTTP status: $HTTP_STATUS"
-            if [ "$HTTP_STATUS" -ne 200 ]; then
-              echo "❌ Failed importing '$name' (HTTP $HTTP_STATUS)" >&2
+            echo "   ↳ HTTP status: $status"
+            if [ "$status" -ne 200 ]; then
+              echo "❌ Failed importing '$name' (HTTP $status)" >&2
               exit 1
             fi
           done < workflows.ndjson
 
-      - name: Verify import via API
+      - name: Verify import via HTTP API
         run: |
           echo "🔍 Verifying workflows on the server"
-          curl -u "$N8N_BASIC_AUTH_USER:$N8N_BASIC_AUTH_PASSWORD" \
+          curl -s \
             -H "Accept: application/json" \
+            -H "X-N8N-API-KEY: $N8N_API_KEY" \
             "$N8N_API_URL/rest/workflows" | jq '. | length as $n | "📄 Workflows count: \($n)"'
