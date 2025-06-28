@@ -66,7 +66,7 @@ jobs:
               curl -s -o /dev/null -w "%{http_code}" \
                 -H "Content-Type: application/json" \
                 -H "$AUTH_HEADER" \
-                -X POST "$N8N_API_URL/api/v1/workflows" \
+                -X POST "$N8N_API_URL/workflows" \
                 --data-binary @-
             )
 
