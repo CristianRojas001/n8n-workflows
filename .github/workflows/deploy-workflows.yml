@@ -31,7 +31,7 @@ jobs:
         run: npm install -g n8n@1.84.3
 
       - name: Debug show N8N_API_URL
-        run: echo "→ CI is targeting: $N8N_API_URL"
+        run: echo "→ CI is targeting $N8N_API_URL"
 
       - name: Check n8n API health
         run: |
