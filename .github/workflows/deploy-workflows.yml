@@ -1,7 +1,4 @@
-for i in $(seq 0 $((workflow_count - 1))); do
-              # Extract and clean the workflow - be more conservative with fields
-              clean_workflow=$(cat workflows.ndjson | jq ".[$i] | {
-                namename: Deploy n8n Workflows
+name: Deploy n8n Workflows
 on:
   push:
     branches: [ main ]
