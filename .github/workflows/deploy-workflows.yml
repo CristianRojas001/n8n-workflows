@@ -1,4 +1,7 @@
-name: Deploy n8n Workflows
+for i in $(seq 0 $((workflow_count - 1))); do
+              # Extract and clean the workflow - be more conservative with fields
+              clean_workflow=$(cat workflows.ndjson | jq ".[$i] | {
+                namename: Deploy n8n Workflows
 on:
   push:
     branches: [ main ]
@@ -46,8 +49,12 @@ jobs:
           # Check if it's a single JSON array or NDJSON format
           if head -c 1 workflows.ndjson | grep -q '\['; then
             echo "🔍 File starts with '[' - appears to be a JSON array"
-            echo "First array element structure:"
+            echo "First workflow keys:"
             cat workflows.ndjson | jq '.[0] | keys' 2>/dev/null || echo "Failed to parse as array"
+            echo ""
+            echo "Sample workflow structure (first 500 chars):"
+            cat workflows.ndjson | jq '.[0]' | head -c 500
+            echo "..."
           else
             echo "🔍 File doesn't start with '[' - checking NDJSON format"
             echo "First line structure:"
@@ -73,21 +80,26 @@ jobs:
             echo "Found $workflow_count workflows in array"
             
             for i in $(seq 0 $((workflow_count - 1))); do
-              # Extract and clean the workflow - remove fields that cause API errors
+              # Show what fields exist in the original workflow
+              echo "🔍 Original workflow [$((i + 1))] fields:"
+              cat workflows.ndjson | jq ".[$i] | keys" 
+              
+              # Try the most minimal approach - only essential fields
               clean_workflow=$(cat workflows.ndjson | jq ".[$i] | {
                 name: .name,
                 nodes: .nodes,
-                connections: .connections,
-                active: (.active // false),
-                settings: (.settings // {}),
-                staticData: (.staticData // {}),
-                tags: (.tags // []),
-                triggerCount: (.triggerCount // 0),
-                versionId: (.versionId // null)
+                connections: .connections
               }")
               
               name=$(echo "$clean_workflow" | jq -r '.name // "unnamed"')
               echo "👉 [$((i + 1))/$workflow_count] Importing: $name"
+              
+              # Show what we're sending
+              echo "🔍 Cleaned workflow structure:"
+              echo "$clean_workflow" | jq 'keys'
+              echo "🔍 First 300 chars of cleaned workflow:"
+              echo "$clean_workflow" | head -c 300
+              echo "..."
               
               # Import the workflow
               response=$(echo "$clean_workflow" | curl -s -w "\n%{http_code}" \
