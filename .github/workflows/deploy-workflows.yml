@@ -81,22 +81,16 @@ jobs:
               echo "🔍 Original workflow [$((i + 1))] fields:"
               cat workflows.ndjson | jq ".[$i] | keys" 
               
-              # Try the most minimal approach - only essential fields
+              # Try with required fields based on API error
               clean_workflow=$(cat workflows.ndjson | jq ".[$i] | {
                 name: .name,
                 nodes: .nodes,
-                connections: .connections
+                connections: .connections,
+                settings: (.settings // {})
               }")
               
               name=$(echo "$clean_workflow" | jq -r '.name // "unnamed"')
               echo "👉 [$((i + 1))/$workflow_count] Importing: $name"
-              
-              # Show what we're sending
-              echo "🔍 Cleaned workflow structure:"
-              echo "$clean_workflow" | jq 'keys'
-              echo "🔍 First 300 chars of cleaned workflow:"
-              echo "$clean_workflow" | head -c 300
-              echo "..."
               
               # Import the workflow
               response=$(echo "$clean_workflow" | curl -s -w "\n%{http_code}" \
