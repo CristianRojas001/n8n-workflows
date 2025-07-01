@@ -27,7 +27,7 @@ jobs:
           status=$(curl -s \
             -H "X-N8N-API-KEY: $N8N_API_KEY" \
             -o /dev/null -w "%{http_code}" \
-            "$N8N_API_URL/api/v1/version")
+            "$N8N_API_URL/rest/workflows")
           if [ "$status" -ne 200 ]; then
             echo "❌ n8n API unhealthy (HTTP $status)" >&2
             exit 1
@@ -35,7 +35,7 @@ jobs:
 
       - name: Import workflows via HTTP API
         run: |
-          echo "🚀 Importing workflows.ndjson into $N8N_API_URL/api/v1/workflows"
+          echo "🚀 Importing workflows.ndjson into $N8N_API_URL/rest/workflows"
           while IFS= read -r wf; do
             name=$(echo "$wf" | jq -r .name)
             echo "👉 $name"
@@ -43,7 +43,7 @@ jobs:
               curl -s -o /dev/null -w "%{http_code}" \
                    -H "Content-Type: application/json" \
                    -H "X-N8N-API-KEY: $N8N_API_KEY" \
-                   -X POST "$N8N_API_URL/api/v1/workflows" \
+                   -X POST "$N8N_API_URL/rest/workflows" \
                    --data-binary @-)
             echo "   ↳ HTTP status: $status"
             if [ "$status" -ne 200 ]; then
@@ -57,5 +57,5 @@ jobs:
           count=$(curl -s \
             -H "Accept: application/json" \
             -H "X-N8N-API-KEY: $N8N_API_KEY" \
-            "$N8N_API_URL/api/v1/workflows" | jq '. | length')
+            "$N8N_API_URL/rest/workflows" | jq '. | length')
           echo "📄 Workflows count: $count"
