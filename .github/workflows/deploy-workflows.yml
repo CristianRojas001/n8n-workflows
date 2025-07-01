@@ -28,6 +28,32 @@ jobs:
             exit 1
           fi
           echo "✅ n8n API healthy (HTTP $status)"
+      - name: Debug workflows.ndjson file
+        run: |
+          echo "🔍 Debugging workflows.ndjson file structure:"
+          
+          # Show file info
+          echo "File size: $(wc -c < workflows.ndjson) bytes"
+          echo "Lines: $(wc -l < workflows.ndjson)"
+          
+          # Show first 200 characters of the file
+          echo ""
+          echo "First 200 characters:"
+          head -c 200 workflows.ndjson
+          echo ""
+          echo ""
+          
+          # Check if it's a single JSON array or NDJSON format
+          if head -c 1 workflows.ndjson | grep -q '\['; then
+            echo "🔍 File starts with '[' - appears to be a JSON array"
+            echo "First array element structure:"
+            cat workflows.ndjson | jq '.[0] | keys' 2>/dev/null || echo "Failed to parse as array"
+          else
+            echo "🔍 File doesn't start with '[' - checking NDJSON format"
+            echo "First line structure:"
+            head -n 1 workflows.ndjson | jq 'keys' 2>/dev/null || echo "Failed to parse first line as JSON object"
+          fi
+      
       - name: Import workflows via HTTP API
         run: |
           echo "🚀 Importing workflows from workflows.ndjson"
@@ -38,48 +64,84 @@ jobs:
             exit 1
           fi
           
-          # Count total workflows
-          total_workflows=$(wc -l < workflows.ndjson)
-          echo "📄 Found $total_workflows workflows to import"
-          
-          # Process each workflow
-          line_num=0
-          while IFS= read -r workflow_json; do
-            line_num=$((line_num + 1))
+          # Detect format and process accordingly
+          if head -c 1 workflows.ndjson | grep -q '\['; then
+            echo "📄 Detected JSON array format - converting to individual workflows"
             
-            # Skip empty lines
-            if [ -z "$workflow_json" ]; then
-              continue
-            fi
+            # Extract each workflow from the array
+            workflow_count=$(cat workflows.ndjson | jq '. | length')
+            echo "Found $workflow_count workflows in array"
             
-            # Validate JSON and extract name
-            if ! echo "$workflow_json" | jq . > /dev/null 2>&1; then
-              echo "⚠️  Line $line_num: Invalid JSON, skipping"
-              continue
-            fi
+            for i in $(seq 0 $((workflow_count - 1))); do
+              workflow_json=$(cat workflows.ndjson | jq ".[$i]")
+              name=$(echo "$workflow_json" | jq -r '.name // "unnamed"')
+              echo "👉 [$((i + 1))/$workflow_count] Importing: $name"
+              
+              # Import the workflow
+              response=$(echo "$workflow_json" | curl -s -w "\n%{http_code}" \
+                -H "Content-Type: application/json" \
+                -H "X-N8N-API-KEY: $N8N_API_KEY" \
+                -H "ngrok-skip-browser-warning: true" \
+                -X POST "$N8N_API_URL/api/v1/workflows" \
+                -d @-)
+              
+              # Extract HTTP status code from response
+              http_code=$(echo "$response" | tail -n1)
+              response_body=$(echo "$response" | head -n -1)
+              
+              if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 201 ]; then
+                echo "   ✅ Imported successfully (HTTP $http_code)"
+              else
+                echo "   ❌ Import failed (HTTP $http_code)"
+                echo "   Response: $response_body"
+              fi
+            done
+          else
+            echo "📄 Processing as NDJSON format"
             
-            name=$(echo "$workflow_json" | jq -r '.name // "unnamed"')
-            echo "👉 [$line_num/$total_workflows] Importing: $name"
+            # Count total workflows
+            total_workflows=$(wc -l < workflows.ndjson)
+            echo "Found $total_workflows workflows to import"
             
-            # Import the workflow
-            response=$(echo "$workflow_json" | curl -s -w "\n%{http_code}" \
-              -H "Content-Type: application/json" \
-              -H "X-N8N-API-KEY: $N8N_API_KEY" \
-              -H "ngrok-skip-browser-warning: true" \
-              -X POST "$N8N_API_URL/api/v1/workflows" \
-              -d @-)
-            
-            # Extract HTTP status code from response
-            http_code=$(echo "$response" | tail -n1)
-            response_body=$(echo "$response" | head -n -1)
-            
-            if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 201 ]; then
-              echo "   ✅ Imported successfully (HTTP $http_code)"
-            else
-              echo "   ❌ Import failed (HTTP $http_code)"
-              echo "   Response: $response_body"
-            fi
-          done < workflows.ndjson
+            # Process each workflow
+            line_num=0
+            while IFS= read -r workflow_json; do
+              line_num=$((line_num + 1))
+              
+              # Skip empty lines
+              if [ -z "$workflow_json" ]; then
+                continue
+              fi
+              
+              # Validate JSON and extract name
+              if ! echo "$workflow_json" | jq . > /dev/null 2>&1; then
+                echo "⚠️  Line $line_num: Invalid JSON, skipping"
+                continue
+              fi
+              
+              name=$(echo "$workflow_json" | jq -r '.name // "unnamed"')
+              echo "👉 [$line_num/$total_workflows] Importing: $name"
+              
+              # Import the workflow
+              response=$(echo "$workflow_json" | curl -s -w "\n%{http_code}" \
+                -H "Content-Type: application/json" \
+                -H "X-N8N-API-KEY: $N8N_API_KEY" \
+                -H "ngrok-skip-browser-warning: true" \
+                -X POST "$N8N_API_URL/api/v1/workflows" \
+                -d @-)
+              
+              # Extract HTTP status code from response
+              http_code=$(echo "$response" | tail -n1)
+              response_body=$(echo "$response" | head -n -1)
+              
+              if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 201 ]; then
+                echo "   ✅ Imported successfully (HTTP $http_code)"
+              else
+                echo "   ❌ Import failed (HTTP $http_code)"
+                echo "   Response: $response_body"
+              fi
+            done < workflows.ndjson
+          fi
       - name: Verify import via HTTP API
         run: |
           response=$(curl -s \
