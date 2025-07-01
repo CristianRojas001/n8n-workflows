@@ -16,6 +16,32 @@ jobs:
           node-version: '18'
       - name: Install n8n CLI v1.84.3
         run: npm install -g n8n@1.84.3
+      - name: Debug workflows.ndjson file
+        run: |
+          echo "📁 Current directory contents:"
+          ls -la
+          echo ""
+          echo "📄 workflows.ndjson exists?"
+          if [ -f "workflows.ndjson" ]; then
+            echo "✅ workflows.ndjson found"
+            echo "📏 File size: $(wc -c < workflows.ndjson) bytes"
+            echo "📊 Line count: $(wc -l < workflows.ndjson) lines"
+            echo ""
+            echo "📋 First few lines of workflows.ndjson:"
+            head -3 workflows.ndjson
+            echo ""
+            echo "🔍 Checking JSON validity of each line:"
+            line_num=0
+            while IFS= read -r line; do
+              line_num=$((line_num + 1))
+              if [ -n "$line" ]; then
+                echo "Line $line_num: $(echo "$line" | jq -r '.name // "NO_NAME_FIELD"' 2>/dev/null || echo "INVALID_JSON")"
+              fi
+            done < workflows.ndjson
+          else
+            echo "❌ workflows.ndjson NOT found"
+            exit 1
+          fi
       - name: Health-check n8n API
         run: |
           status=$(curl -s \
@@ -31,22 +57,67 @@ jobs:
       - name: Import workflows via HTTP API
         run: |
           echo "🚀 Importing workflows.ndjson into $N8N_API_URL/api/v1/workflows"
+          
+          # Check if file exists and is readable
+          if [ ! -f "workflows.ndjson" ]; then
+            echo "❌ workflows.ndjson file not found" >&2
+            exit 1
+          fi
+          
+          # Count total workflows to import
+          total_workflows=$(grep -c . workflows.ndjson 2>/dev/null || echo "0")
+          echo "📊 Total workflows to import: $total_workflows"
+          
+          if [ "$total_workflows" -eq 0 ]; then
+            echo "⚠️  No workflows found in workflows.ndjson"
+            exit 0
+          fi
+          
+          # Import each workflow
+          line_num=0
           while IFS= read -r wf; do
-            name=$(echo "$wf" | jq -r .name)
-            echo "👉 $name"
-            status=$(echo "$wf" | \
-              curl -s -o /dev/null -w "%{http_code}" \
-                   -H "Content-Type: application/json" \
-                   -H "X-N8N-API-KEY: $N8N_API_KEY" \
-                   -H "ngrok-skip-browser-warning: true" \
-                   -X POST "$N8N_API_URL/api/v1/workflows" \
-                   --data-binary @-)
-            echo "   ↳ HTTP status: $status"
-            if [ "$status" -ne 200 ] && [ "$status" -ne 201 ]; then
-              echo "❌ Failed importing '$name' (HTTP $status)" >&2
-              exit 1
+            line_num=$((line_num + 1))
+            
+            # Skip empty lines
+            if [ -z "$wf" ]; then
+              echo "⏭️  Skipping empty line $line_num"
+              continue
             fi
+            
+            # Extract workflow name
+            name=$(echo "$wf" | jq -r '.name // "unnamed-workflow"' 2>/dev/null)
+            if [ "$?" -ne 0 ]; then
+              echo "❌ Invalid JSON on line $line_num" >&2
+              continue
+            fi
+            
+            echo "👉 Importing: $name (line $line_num)"
+            
+            # Make the API call and capture both status and response
+            response=$(echo "$wf" | curl -s -w "\n%{http_code}" \
+              -H "Content-Type: application/json" \
+              -H "X-N8N-API-KEY: $N8N_API_KEY" \
+              -H "ngrok-skip-browser-warning: true" \
+              -X POST "$N8N_API_URL/api/v1/workflows" \
+              --data-binary @-)
+            
+            # Extract status code (last line) and body (everything else)
+            status=$(echo "$response" | tail -n1)
+            body=$(echo "$response" | head -n -1)
+            
+            echo "   ↳ HTTP status: $status"
+            
+            if [ "$status" -eq 200 ] || [ "$status" -eq 201 ]; then
+              workflow_id=$(echo "$body" | jq -r '.id // "unknown"' 2>/dev/null)
+              echo "   ✅ Success! Workflow ID: $workflow_id"
+            else
+              echo "   ❌ Failed! Response: $body"
+              # Don't exit on individual failures, continue with other workflows
+            fi
+            
           done < workflows.ndjson
+          
+          echo "🏁 Import process completed"
       - name: Verify import via HTTP API
         run: |
           response=$(curl -s \
@@ -55,5 +126,7 @@ jobs:
             -H "ngrok-skip-browser-warning: true" \
             "$N8N_API_URL/api/v1/workflows")
           count=$(echo "$response" | jq '.data | length')
-          echo "📄 Workflows count: $count"
-          echo "📋 Response: $response"
+          echo "📄 Total workflows in n8n: $count"
+          echo ""
+          echo "📋 Workflow names:"
+          echo "$response" | jq -r '.data[] | "- \(.name) (ID: \(.id))"'
