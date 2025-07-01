@@ -9,41 +9,42 @@ jobs:
   import:
     runs-on: ubuntu-latest
     env:
-      N8N_API_URL:             ${{ secrets.N8N_API_URL }}
-      N8N_BASIC_AUTH_USER:     ${{ secrets.N8N_BASIC_AUTH_USER }}
-      N8N_BASIC_AUTH_PASSWORD: ${{ secrets.N8N_BASIC_AUTH_PASSWORD }}
+      N8N_API_URL: https://e49b-85-53-80-220.ngrok-free.app
+      N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
-        with: { node-version: '18' }
+        with:
+          node-version: '18'
 
       - name: Install n8n CLI v1.84.3
         run: npm install -g n8n@1.84.3
 
-      - name: Health-check n8n
+      - name: Health-check n8n API
         run: |
-          status=$(curl -u "$N8N_BASIC_AUTH_USER:$N8N_BASIC_AUTH_PASSWORD" \
-            -s -o /dev/null -w "%{http_code}" \
-            "$N8N_API_URL/")
-          test "$status" -eq 200
+          status=$(curl -s \
+            -H "X-N8N-API-KEY: $N8N_API_KEY" \
+            -o /dev/null -w "%{http_code}" \
+            "$N8N_API_URL/api/v1/version")
+          if [ "$status" -ne 200 ]; then
+            echo "❌ n8n API unhealthy (HTTP $status)" >&2
+            exit 1
+          fi
 
       - name: Import workflows via HTTP API
         run: |
-          echo "🚀 Importing workflows.ndjson into $N8N_API_URL/rest/workflows"
-          AUTH_HEADER="X-N8N-API-KEY: $N8N_API_KEY"
+          echo "🚀 Importing workflows.ndjson into $N8N_API_URL/api/v1/workflows"
           while IFS= read -r wf; do
             name=$(echo "$wf" | jq -r .name)
             echo "👉 $name"
-            status=$(
-              echo "$wf" | \
+            status=$(echo "$wf" | \
               curl -s -o /dev/null -w "%{http_code}" \
                    -H "Content-Type: application/json" \
-                   -H "$AUTH_HEADER" \
-                   -X POST "$N8N_API_URL/rest/workflows" \
-                   --data-binary @-
-            )
+                   -H "X-N8N-API-KEY: $N8N_API_KEY" \
+                   -X POST "$N8N_API_URL/api/v1/workflows" \
+                   --data-binary @-)
             echo "   ↳ HTTP status: $status"
             if [ "$status" -ne 200 ]; then
               echo "❌ Failed importing '$name' (HTTP $status)" >&2
@@ -53,8 +54,8 @@ jobs:
 
       - name: Verify import via HTTP API
         run: |
-          echo "🔍 Verifying workflows on the server"
-          curl -s \
+          count=$(curl -s \
             -H "Accept: application/json" \
             -H "X-N8N-API-KEY: $N8N_API_KEY" \
-            "$N8N_API_URL/rest/workflows" | jq '. | length as $n | "📄 Workflows count: \($n)"'
+            "$N8N_API_URL/api/v1/workflows" | jq '. | length')
+          echo "📄 Workflows count: $count"
