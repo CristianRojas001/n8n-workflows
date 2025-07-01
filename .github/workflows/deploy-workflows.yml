@@ -32,22 +32,54 @@ jobs:
         run: |
           echo "🚀 Importing workflows from workflows.ndjson"
           
-          # Simple import without complex error handling
-          cat workflows.ndjson | while read -r workflow_json; do
-            if [ -n "$workflow_json" ]; then
-              name=$(echo "$workflow_json" | jq -r '.name // "unnamed"')
-              echo "👉 Importing: $name"
-              
-              echo "$workflow_json" | curl -s \
-                -H "Content-Type: application/json" \
-                -H "X-N8N-API-KEY: $N8N_API_KEY" \
-                -H "ngrok-skip-browser-warning: true" \
-                -X POST "$N8N_API_URL/api/v1/workflows" \
-                -d @- \
-                && echo "   ✅ Imported successfully" \
-                || echo "   ❌ Import failed"
+          # Check if workflows.ndjson exists
+          if [ ! -f workflows.ndjson ]; then
+            echo "❌ workflows.ndjson file not found"
+            exit 1
+          fi
+          
+          # Count total workflows
+          total_workflows=$(wc -l < workflows.ndjson)
+          echo "📄 Found $total_workflows workflows to import"
+          
+          # Process each workflow
+          line_num=0
+          while IFS= read -r workflow_json; do
+            line_num=$((line_num + 1))
+            
+            # Skip empty lines
+            if [ -z "$workflow_json" ]; then
+              continue
             fi
-          done
+            
+            # Validate JSON and extract name
+            if ! echo "$workflow_json" | jq . > /dev/null 2>&1; then
+              echo "⚠️  Line $line_num: Invalid JSON, skipping"
+              continue
+            fi
+            
+            name=$(echo "$workflow_json" | jq -r '.name // "unnamed"')
+            echo "👉 [$line_num/$total_workflows] Importing: $name"
+            
+            # Import the workflow
+            response=$(echo "$workflow_json" | curl -s -w "\n%{http_code}" \
+              -H "Content-Type: application/json" \
+              -H "X-N8N-API-KEY: $N8N_API_KEY" \
+              -H "ngrok-skip-browser-warning: true" \
+              -X POST "$N8N_API_URL/api/v1/workflows" \
+              -d @-)
+            
+            # Extract HTTP status code from response
+            http_code=$(echo "$response" | tail -n1)
+            response_body=$(echo "$response" | head -n -1)
+            
+            if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 201 ]; then
+              echo "   ✅ Imported successfully (HTTP $http_code)"
+            else
+              echo "   ❌ Import failed (HTTP $http_code)"
+              echo "   Response: $response_body"
+            fi
+          done < workflows.ndjson
       - name: Verify import via HTTP API
         run: |
           response=$(curl -s \
