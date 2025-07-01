@@ -73,12 +73,24 @@ jobs:
             echo "Found $workflow_count workflows in array"
             
             for i in $(seq 0 $((workflow_count - 1))); do
-              workflow_json=$(cat workflows.ndjson | jq ".[$i]")
-              name=$(echo "$workflow_json" | jq -r '.name // "unnamed"')
+              # Extract and clean the workflow - remove fields that cause API errors
+              clean_workflow=$(cat workflows.ndjson | jq ".[$i] | {
+                name: .name,
+                nodes: .nodes,
+                connections: .connections,
+                active: (.active // false),
+                settings: (.settings // {}),
+                staticData: (.staticData // {}),
+                tags: (.tags // []),
+                triggerCount: (.triggerCount // 0),
+                versionId: (.versionId // null)
+              }")
+              
+              name=$(echo "$clean_workflow" | jq -r '.name // "unnamed"')
               echo "👉 [$((i + 1))/$workflow_count] Importing: $name"
               
               # Import the workflow
-              response=$(echo "$workflow_json" | curl -s -w "\n%{http_code}" \
+              response=$(echo "$clean_workflow" | curl -s -w "\n%{http_code}" \
                 -H "Content-Type: application/json" \
                 -H "X-N8N-API-KEY: $N8N_API_KEY" \
                 -H "ngrok-skip-browser-warning: true" \
@@ -119,11 +131,24 @@ jobs:
                 continue
               fi
               
-              name=$(echo "$workflow_json" | jq -r '.name // "unnamed"')
+              # Clean the workflow - remove fields that cause API errors
+              clean_workflow=$(echo "$workflow_json" | jq '{
+                name: .name,
+                nodes: .nodes,
+                connections: .connections,
+                active: (.active // false),
+                settings: (.settings // {}),
+                staticData: (.staticData // {}),
+                tags: (.tags // []),
+                triggerCount: (.triggerCount // 0),
+                versionId: (.versionId // null)
+              }')
+              
+              name=$(echo "$clean_workflow" | jq -r '.name // "unnamed"')
               echo "👉 [$line_num/$total_workflows] Importing: $name"
               
               # Import the workflow
-              response=$(echo "$workflow_json" | curl -s -w "\n%{http_code}" \
+              response=$(echo "$clean_workflow" | curl -s -w "\n%{http_code}" \
                 -H "Content-Type: application/json" \
                 -H "X-N8N-API-KEY: $N8N_API_KEY" \
                 -H "ngrok-skip-browser-warning: true" \
