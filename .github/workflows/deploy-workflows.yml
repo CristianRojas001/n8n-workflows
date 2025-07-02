@@ -28,6 +28,7 @@ jobs:
             exit 1
           fi
           echo "✅ n8n API healthy (HTTP $status)"
+      
       - name: Debug workflows.ndjson file
         run: |
           echo "🔍 Debugging workflows.ndjson file structure:"
@@ -48,19 +49,73 @@ jobs:
             echo "🔍 File starts with '[' - appears to be a JSON array"
             echo "First workflow keys:"
             cat workflows.ndjson | jq '.[0] | keys' 2>/dev/null || echo "Failed to parse as array"
-            echo ""
-            echo "Sample workflow structure (first 500 chars):"
-            cat workflows.ndjson | jq '.[0]' | head -c 500
-            echo "..."
           else
             echo "🔍 File doesn't start with '[' - checking NDJSON format"
             echo "First line structure:"
             head -n 1 workflows.ndjson | jq 'keys' 2>/dev/null || echo "Failed to parse first line as JSON object"
           fi
-      
-      - name: Import workflows via HTTP API
+
+      - name: Test API with minimal workflow
         run: |
-          echo "🚀 Importing workflows from workflows.ndjson"
+          echo "🧪 Testing API with minimal workflow to understand accepted settings format"
+          
+          # Create a minimal test workflow
+          test_workflow='{
+            "name": "API_Test_Workflow_DELETE_ME",
+            "nodes": [
+              {
+                "parameters": {},
+                "id": "test-node-1",
+                "name": "Start",
+                "type": "n8n-nodes-base.start",
+                "typeVersion": 1,
+                "position": [240, 300]
+              }
+            ],
+            "connections": {},
+            "settings": {}
+          }'
+          
+          echo "📤 Creating test workflow..."
+          response=$(echo "$test_workflow" | curl -s -w "\n%{http_code}" \
+            -H "Content-Type: application/json" \
+            -H "X-N8N-API-KEY: $N8N_API_KEY" \
+            -H "ngrok-skip-browser-warning: true" \
+            -X POST "$N8N_API_URL/api/v1/workflows" \
+            -d @-)
+          
+          http_code=$(echo "$response" | tail -n1)
+          response_body=$(echo "$response" | head -n -1)
+          
+          if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 201 ]; then
+            workflow_id=$(echo "$response_body" | jq -r '.data.id // .id')
+            echo "✅ Test workflow created successfully (ID: $workflow_id)"
+            
+            # Get the created workflow to see what settings structure is returned
+            echo "📥 Fetching created workflow to see API format..."
+            api_workflow=$(curl -s \
+              -H "X-N8N-API-KEY: $N8N_API_KEY" \
+              -H "ngrok-skip-browser-warning: true" \
+              "$N8N_API_URL/api/v1/workflows/$workflow_id")
+            
+            echo "🔍 API returned workflow settings structure:"
+            echo "$api_workflow" | jq '.data.settings // .settings // "No settings found"'
+            
+            # Clean up test workflow
+            echo "🧹 Cleaning up test workflow..."
+            curl -s \
+              -H "X-N8N-API-KEY: $N8N_API_KEY" \
+              -H "ngrok-skip-browser-warning: true" \
+              -X DELETE "$N8N_API_URL/api/v1/workflows/$workflow_id" > /dev/null
+            echo "✅ Test workflow deleted"
+          else
+            echo "❌ Test workflow creation failed (HTTP $http_code)"
+            echo "Response: $response_body"
+          fi
+
+      - name: Import workflows with enhanced debugging
+        run: |
+          echo "🚀 Importing workflows from workflows.ndjson with enhanced debugging"
           
           # Check if workflows.ndjson exists
           if [ ! -f workflows.ndjson ]; then
@@ -77,40 +132,85 @@ jobs:
             echo "Found $workflow_count workflows in array"
             
             for i in $(seq 0 $((workflow_count - 1))); do
-              # Show what fields exist in the original workflow
-              echo "🔍 Original workflow [$((i + 1))] fields:"
-              cat workflows.ndjson | jq ".[$i] | keys" 
+              echo ""
+              echo "🔄 Processing workflow [$((i + 1))/$workflow_count]"
               
-              # Try with required fields based on API error
-              clean_workflow=$(cat workflows.ndjson | jq ".[$i] | {
-                name: .name,
-                nodes: .nodes,
-                connections: .connections,
-                settings: (.settings // {})
-              }")
+              # Get workflow name first
+              name=$(cat workflows.ndjson | jq -r ".[$i].name // \"unnamed_$i\"")
+              echo "👉 Workflow: $name"
               
-              name=$(echo "$clean_workflow" | jq -r '.name // "unnamed"')
-              echo "👉 [$((i + 1))/$workflow_count] Importing: $name"
+              # Show original settings for debugging
+              echo "🔍 Original settings structure:"
+              original_settings=$(cat workflows.ndjson | jq ".[$i].settings // {}")
+              echo "$original_settings" | jq .
               
-              # Import the workflow
-              response=$(echo "$clean_workflow" | curl -s -w "\n%{http_code}" \
-                -H "Content-Type: application/json" \
-                -H "X-N8N-API-KEY: $N8N_API_KEY" \
-                -H "ngrok-skip-browser-warning: true" \
-                -X POST "$N8N_API_URL/api/v1/workflows" \
-                -d @-)
+              # Try different cleaning strategies
+              echo "🧪 Testing different settings cleaning approaches..."
               
-              # Extract HTTP status code from response
-              http_code=$(echo "$response" | tail -n1)
-              response_body=$(echo "$response" | head -n -1)
+              # Strategy 1: Only core settings
+              core_settings=$(echo "$original_settings" | jq '{
+                executionOrder: .executionOrder,
+                saveManualExecutions: .saveManualExecutions,
+                callerPolicy: .callerPolicy,
+                errorWorkflow: .errorWorkflow,
+                timezone: .timezone
+              } | with_entries(select(.value != null and .value != ""))')
               
-              if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 201 ]; then
-                echo "   ✅ Imported successfully (HTTP $http_code)"
-              else
-                echo "   ❌ Import failed (HTTP $http_code)"
-                echo "   Response: $response_body"
+              # Strategy 2: Remove known problematic fields but keep others
+              filtered_settings=$(echo "$original_settings" | jq 'del(.saveDataErrorExecution, .saveDataSuccessExecution, .saveExecutionProgress, .executionTimeout)')
+              
+              # Strategy 3: Empty settings
+              empty_settings="{}"
+              
+              # Try each strategy
+              strategies=("core" "filtered" "empty")
+              settings_variants=("$core_settings" "$filtered_settings" "$empty_settings")
+              
+              success=false
+              for strategy_idx in 0 1 2; do
+                strategy_name=${strategies[$strategy_idx]}
+                settings_to_use=${settings_variants[$strategy_idx]}
+                
+                echo "   🧪 Trying strategy: $strategy_name"
+                echo "   Settings: $settings_to_use"
+                
+                # Create clean workflow with current settings strategy
+                clean_workflow=$(cat workflows.ndjson | jq ".[$i] | {
+                  name: .name,
+                  nodes: .nodes,
+                  connections: .connections,
+                  settings: ($settings_to_use)
+                }" --argjson settings_to_use "$settings_to_use")
+                
+                # Import the workflow
+                response=$(echo "$clean_workflow" | curl -s -w "\n%{http_code}" \
+                  -H "Content-Type: application/json" \
+                  -H "X-N8N-API-KEY: $N8N_API_KEY" \
+                  -H "ngrok-skip-browser-warning: true" \
+                  -X POST "$N8N_API_URL/api/v1/workflows" \
+                  -d @-)
+                
+                # Extract HTTP status code from response
+                http_code=$(echo "$response" | tail -n1)
+                response_body=$(echo "$response" | head -n -1)
+                
+                if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 201 ]; then
+                  echo "   ✅ Import successful with $strategy_name strategy (HTTP $http_code)"
+                  success=true
+                  break
+                else
+                  echo "   ❌ Strategy $strategy_name failed (HTTP $http_code)"
+                  echo "   Response: $response_body"
+                fi
+              done
+              
+              if [ "$success" = false ]; then
+                echo "   💥 All strategies failed for workflow: $name"
+                echo "   🔍 Full workflow structure causing issues:"
+                cat workflows.ndjson | jq ".[$i]" | head -50
               fi
             done
+            
           else
             echo "📄 Processing as NDJSON format"
             
@@ -134,42 +234,110 @@ jobs:
                 continue
               fi
               
-              # Clean the workflow - remove fields that cause API errors
-              clean_workflow=$(echo "$workflow_json" | jq '{
-                name: .name,
-                nodes: .nodes,
-                connections: .connections,
-                active: (.active // false),
-                settings: (.settings // {}),
-                staticData: (.staticData // {}),
-                tags: (.tags // []),
-                triggerCount: (.triggerCount // 0),
-                versionId: (.versionId // null)
-              }')
+              echo ""
+              echo "🔄 Processing workflow [$line_num/$total_workflows]"
               
-              name=$(echo "$clean_workflow" | jq -r '.name // "unnamed"')
-              echo "👉 [$line_num/$total_workflows] Importing: $name"
+              name=$(echo "$workflow_json" | jq -r '.name // "unnamed"')
+              echo "👉 Workflow: $name"
               
-              # Import the workflow
-              response=$(echo "$clean_workflow" | curl -s -w "\n%{http_code}" \
-                -H "Content-Type: application/json" \
-                -H "X-N8N-API-KEY: $N8N_API_KEY" \
-                -H "ngrok-skip-browser-warning: true" \
-                -X POST "$N8N_API_URL/api/v1/workflows" \
-                -d @-)
+              # Show original settings for debugging
+              echo "🔍 Original settings structure:"
+              original_settings=$(echo "$workflow_json" | jq '.settings // {}')
+              echo "$original_settings" | jq .
               
-              # Extract HTTP status code from response
-              http_code=$(echo "$response" | tail -n1)
-              response_body=$(echo "$response" | head -n -1)
+              # Try different cleaning strategies (same as above)
+              core_settings=$(echo "$original_settings" | jq '{
+                executionOrder: .executionOrder,
+                saveManualExecutions: .saveManualExecutions,
+                callerPolicy: .callerPolicy,
+                errorWorkflow: .errorWorkflow,
+                timezone: .timezone
+              } | with_entries(select(.value != null and .value != ""))')
               
-              if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 201 ]; then
-                echo "   ✅ Imported successfully (HTTP $http_code)"
-              else
-                echo "   ❌ Import failed (HTTP $http_code)"
-                echo "   Response: $response_body"
+              filtered_settings=$(echo "$original_settings" | jq 'del(.saveDataErrorExecution, .saveDataSuccessExecution, .saveExecutionProgress, .executionTimeout)')
+              
+              empty_settings="{}"
+              
+              strategies=("core" "filtered" "empty")
+              settings_variants=("$core_settings" "$filtered_settings" "$empty_settings")
+              
+              success=false
+              for strategy_idx in 0 1 2; do
+                strategy_name=${strategies[$strategy_idx]}
+                settings_to_use=${settings_variants[$strategy_idx]}
+                
+                echo "   🧪 Trying strategy: $strategy_name"
+                echo "   Settings: $settings_to_use"
+                
+                clean_workflow=$(echo "$workflow_json" | jq '{
+                  name: .name,
+                  nodes: .nodes,
+                  connections: .connections,
+                  settings: ($settings_to_use)
+                }' --argjson settings_to_use "$settings_to_use")
+                
+                response=$(echo "$clean_workflow" | curl -s -w "\n%{http_code}" \
+                  -H "Content-Type: application/json" \
+                  -H "X-N8N-API-KEY: $N8N_API_KEY" \
+                  -H "ngrok-skip-browser-warning: true" \
+                  -X POST "$N8N_API_URL/api/v1/workflows" \
+                  -d @-)
+                
+                http_code=$(echo "$response" | tail -n1)
+                response_body=$(echo "$response" | head -n -1)
+                
+                if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 201 ]; then
+                  echo "   ✅ Import successful with $strategy_name strategy (HTTP $http_code)"
+                  success=true
+                  break
+                else
+                  echo "   ❌ Strategy $strategy_name failed (HTTP $http_code)"
+                  echo "   Response: $response_body"
+                fi
+              done
+              
+              if [ "$success" = false ]; then
+                echo "   💥 All strategies failed for workflow: $name"
               fi
+              
             done < workflows.ndjson
           fi
+
+      - name: Handle folder organization (tags)
+        run: |
+          echo "📁 Checking and organizing workflows into folders using tags..."
+          
+          # Get all workflows
+          workflows_response=$(curl -s \
+            -H "Accept: application/json" \
+            -H "X-N8N-API-KEY: $N8N_API_KEY" \
+            -H "ngrok-skip-browser-warning: true" \
+            "$N8N_API_URL/api/v1/workflows")
+          
+          echo "🔍 Current workflows in n8n:"
+          echo "$workflows_response" | jq '.data[] | {id: .id, name: .name, tags: .tags}'
+          
+          # Check if we have folder information in the original export
+          if head -c 1 workflows.ndjson | grep -q '\['; then
+            echo "📂 Checking for folder/tag information in original workflows..."
+            
+            workflow_count=$(cat workflows.ndjson | jq '. | length')
+            for i in $(seq 0 $((workflow_count - 1))); do
+              name=$(cat workflows.ndjson | jq -r ".[$i].name")
+              tags=$(cat workflows.ndjson | jq -r ".[$i].tags // [] | @json")
+              meta=$(cat workflows.ndjson | jq -r ".[$i].meta // {} | @json")
+              
+              if [ "$tags" != "[]" ] || [ "$meta" != "{}" ]; then
+                echo "   $name - Tags: $tags, Meta: $meta"
+              fi
+            done
+          fi
+          
+          echo "💡 To organize workflows into folders, you'll need to:"
+          echo "   1. Create tags in n8n UI or via API"
+          echo "   2. Update workflows with appropriate tag assignments"
+          echo "   3. Or modify the import process to include tag information"
+
       - name: Verify import via HTTP API
         run: |
           response=$(curl -s \
@@ -179,3 +347,7 @@ jobs:
             "$N8N_API_URL/api/v1/workflows")
           count=$(echo "$response" | jq '.data | length')
           echo "📄 Total workflows in n8n: $count"
+          
+          echo ""
+          echo "📋 Imported workflows summary:"
+          echo "$response" | jq -r '.data[] | "   ✅ \(.name) (ID: \(.id))"'
