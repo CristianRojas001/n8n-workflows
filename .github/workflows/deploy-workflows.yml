@@ -147,7 +147,12 @@ jobs:
               # Try different cleaning strategies
               echo "🧪 Testing different settings cleaning approaches..."
               
-              # Strategy 1: Only core settings
+              # Strategy 1: Only proven working settings (minimal)
+              minimal_settings=$(echo "$original_settings" | jq '{
+                executionOrder: .executionOrder
+              } | with_entries(select(.value != null and .value != ""))')
+              
+              # Strategy 2: Core settings with more fields
               core_settings=$(echo "$original_settings" | jq '{
                 executionOrder: .executionOrder,
                 saveManualExecutions: .saveManualExecutions,
@@ -156,18 +161,28 @@ jobs:
                 timezone: .timezone
               } | with_entries(select(.value != null and .value != ""))')
               
-              # Strategy 2: Remove known problematic fields but keep others
-              filtered_settings=$(echo "$original_settings" | jq 'del(.saveDataErrorExecution, .saveDataSuccessExecution, .saveExecutionProgress, .executionTimeout)')
+              # Strategy 3: Remove ALL known problematic fields
+              filtered_settings=$(echo "$original_settings" | jq 'del(
+                .saveDataErrorExecution, 
+                .saveDataSuccessExecution, 
+                .saveExecutionProgress, 
+                .executionTimeout,
+                .saveExecutionOnError,
+                .saveExecutionOnSuccess,
+                .saveDataManualExecutions,
+                .callerIds,
+                .executionTimeout
+              )')
               
-              # Strategy 3: Empty settings
+              # Strategy 4: Empty settings
               empty_settings="{}"
               
               # Try each strategy
-              strategies=("core" "filtered" "empty")
-              settings_variants=("$core_settings" "$filtered_settings" "$empty_settings")
+              strategies=("minimal" "core" "filtered" "empty")
+              settings_variants=("$minimal_settings" "$core_settings" "$filtered_settings" "$empty_settings")
               
               success=false
-              for strategy_idx in 0 1 2; do
+              for strategy_idx in 0 1 2 3; do
                 strategy_name=${strategies[$strategy_idx]}
                 settings_to_use=${settings_variants[$strategy_idx]}
                 
@@ -246,6 +261,10 @@ jobs:
               echo "$original_settings" | jq .
               
               # Try different cleaning strategies (same as above)
+              minimal_settings=$(echo "$original_settings" | jq '{
+                executionOrder: .executionOrder
+              } | with_entries(select(.value != null and .value != ""))')
+              
               core_settings=$(echo "$original_settings" | jq '{
                 executionOrder: .executionOrder,
                 saveManualExecutions: .saveManualExecutions,
@@ -254,15 +273,25 @@ jobs:
                 timezone: .timezone
               } | with_entries(select(.value != null and .value != ""))')
               
-              filtered_settings=$(echo "$original_settings" | jq 'del(.saveDataErrorExecution, .saveDataSuccessExecution, .saveExecutionProgress, .executionTimeout)')
+              filtered_settings=$(echo "$original_settings" | jq 'del(
+                .saveDataErrorExecution, 
+                .saveDataSuccessExecution, 
+                .saveExecutionProgress, 
+                .executionTimeout,
+                .saveExecutionOnError,
+                .saveExecutionOnSuccess,
+                .saveDataManualExecutions,
+                .callerIds,
+                .executionTimeout
+              )')
               
               empty_settings="{}"
               
-              strategies=("core" "filtered" "empty")
-              settings_variants=("$core_settings" "$filtered_settings" "$empty_settings")
+              strategies=("minimal" "core" "filtered" "empty")
+              settings_variants=("$minimal_settings" "$core_settings" "$filtered_settings" "$empty_settings")
               
               success=false
-              for strategy_idx in 0 1 2; do
+              for strategy_idx in 0 1 2 3; do
                 strategy_name=${strategies[$strategy_idx]}
                 settings_to_use=${settings_variants[$strategy_idx]}
                 
