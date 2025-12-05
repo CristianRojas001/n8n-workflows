@@ -1,0 +1,57 @@
+# Infrastructure Checklist - InfoSubvenciones
+
+> Purpose: Track all external services, credentials, and infrastructure setup. Complete this checklist before starting implementation.
+
+**Last Updated**: 2025-12-01
+**Status**: In Progress - Day 2 of Foundation Week
+
+## 1. Environments
+| Environment | Purpose | URL / Access | Status | Notes |
+|-------------|---------|--------------|--------|-------|
+| Local dev   | _Individual laptops._ | `http://localhost:3000/8000` | ☐ ready | _Docker? bare metal?_ |
+| Staging     | _Internal QA._ |  | ☐ ready | _Login creds, VPN?_ |
+| Production  | _Customers._ |  | ☐ ready | _Domains, SSL certs, CDN._ |
+
+## 2. Core Services
+| Service | Provider / Version | Credentials stored where? | Provisioning steps | Monitoring |
+|---------|--------------------|---------------------------|--------------------|------------|
+| Primary DB | _Postgres/pgvector, etc._ | _Vault, .env?_ | _Link to Terraform or manual guide._ | _CloudWatch, Grafana, etc._ |
+| Cache / Broker | _Redis, RabbitMQ._ | | | |
+| Search Index | _OpenSearch/Elastic._ | | | |
+| Object Storage | _S3/GCS._ | | | |
+| LLM Provider | _OpenAI/Anthropic/DeepSeek._ | | _API keys, rate limits._ | |
+| Embedding Service | _OpenAI text-embedding-3-large, etc._ | | | |
+
+## 3. Supporting Systems
+- **CI/CD**: _GitHub Actions, Jenkins, etc. Describe pipelines, secrets, required approvals._
+- **Monitoring/Logging**: _Prometheus, Datadog, Sentry. What dashboards/alerts exist?_
+- **Secrets Management**: _How `.env` files are generated, rotation process, per-environment overrides._
+- **Access Control**: _Who can deploy? Who manages keys? Document onboarding steps._
+
+## 4. Automation Scripts
+List every helper script and what it does.
+- `scripts/setup_backend.sh` – _Install deps, create venv, run migrations._
+- `scripts/setup_frontend.sh` – _Install Node packages, build, start dev server._
+- `scripts/deploy.sh` – _Sequence for building + deploying both stacks._
+- `scripts/ingest_data.py` – _Example ingestion job; include schedule + env vars._
+
+Include command examples and prerequisites so a newcomer (or assistant) can run them safely.
+
+## 5. Environment Variables Overview
+| Variable | Description | Environment(s) | Default / Example |
+|----------|-------------|----------------|-------------------|
+| `DATABASE_URL` | _Primary DB connection string._ | All | `postgres://user:pass@host/db` |
+| `REDIS_URL` | _Broker/cache endpoint._ | Dev/Prod |  |
+| `LLM_API_KEY` | _LLM provider secret._ | Staging/Prod |  |
+| `STRIPE_SECRET_KEY` | _Billing integration._ | Staging/Prod |  |
+| ... | | | |
+
+## 6. Security & Compliance
+- **Data classification**: _What data is stored where? encryption requirements?_
+- **Backups/DR**: _Schedule, retention, restoration drills._
+- **Network rules**: _Firewall rules, VPC layout, VPN requirements._
+
+## 7. Outstanding Tasks
+- ☐ _Example: Provision staging OpenSearch cluster._
+- ☐ _Example: Automate secret rotation via Vault._
+- ☐ _Example: Document manual deploy rollback steps._

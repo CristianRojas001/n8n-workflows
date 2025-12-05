@@ -1,0 +1,56 @@
+Confirmo ambos objetivos y a continuación te envío la propuesta integrando todo lo discutido.
+
+1. Sistema inteligente de subvenciones (tipo FANDIT)
+Acepto el alcance descrito y detallo nuevamente las funcionalidades que incluirá la plataforma en el subdominio subvenciones.artisting.es:
+
+Funciones confirmadas del sistema:
+Mostrar ayudas y subvenciones estructuradas obtenidas de INFO SUBVENCIONES.
+
+Filtros avanzados y búsqueda inteligente.
+
+Motor conversacional con IA para poder consultar cualquier ayuda de forma natural.
+
+CRM de registro de usuario y perfil de solicitante.
+
+Envío automatizado de boletines semanales/mensuales según perfil.
+
+Limpieza, actualización y mantenimiento continuo de la base de datos.
+
+Todas las funcionalidades adicionales incluidas en el SCOPE.
+
+Campos de búsqueda incluidos:
+Organismo convocante / tipo de organismo (estatal, autonómico, municipal, provincial).
+
+Nombre del organismo (cuando se busque por una entidad específica).
+
+Sector económico (CNAE) — cultura, I+D, industria, turismo/hostelería, etc.
+
+Tipo de ayuda — subvenciones, becas, préstamos, bonificaciones/deducciones, premios.
+
+Origen de los fondos — UE, FEDER, FSE, Next Generation, etc.
+
+Otros filtros relevantes según disponibilidad de INFO SUBVENCIONES.
+
+Duración estimada: 2–3 semanas.
+
+2. Reemplazo del RAG legal en chat.artisting.es
+Incorporo dentro de este proyecto el nuevo RAG legal, reemplazando el RAG anterior.
+
+Requerimientos incluidos:
+Revisión y mejora de la integración con la API del BOE.
+
+Procesamiento estructurado de la información del BOE.
+
+Integración de jurisprudencia y consultas vinculantes (CENDOJ y PETETE).
+
+Razonamiento legal, fiscal, contable y laboral preciso y sin alucinaciones, enfocado en autónomos y sociedades del sector cultural y creativo.
+
+Actualización continua con cambios legislativos.
+
+Motor conversacional semántico capaz de solicitar contexto cuando sea necesario.
+
+Módulo de administrador para gestión básica del sistema.
+
+Integración posterior del sistema de pago.
+
+Duración estimada: 2–3 semanas.

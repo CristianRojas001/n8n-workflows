@@ -1,0 +1,446 @@
+id,numero_convocatoria,codigo,titulo,descripcion,objeto,organismo,organismo_id,departamento,tipo_administracion,nivel_administracion,finalidad,finalidad_descripcion,sectores,regiones,ambito,tipos_beneficiario,beneficiarios_descripcion,requisitos_beneficiarios,fecha_publicacion,fecha_inicio_solicitud,fecha_fin_solicitud,fecha_resolucion,abierto,importe_total,importe_minimo,importe_maximo,porcentaje_financiacion,forma_solicitud,lugar_presentacion,tramite_electronico,url_tramite,documentos,tiene_pdf,pdf_url,pdf_nombre,pdf_id_documento,pdf_hash,bases_reguladoras,normativa,compatibilidades,contacto,observaciones,raw_api_response,fuente,created_at,updated_at,status,batch_id,retry_count,error_message,last_stage,completed_at,convocatoria_id,gastos_subvencionables,cuantia_subvencion,cuantia_min,cuantia_max,intensidad_ayuda,compatibilidad_otras_ayudas,plazo_ejecucion,plazo_justificacion,fecha_inicio_ejecucion,fecha_fin_ejecucion,plazo_resolucion,forma_justificacion,documentacion_requerida,sistema_evaluacion,forma_pago,pago_anticipado,garantias,exige_aval,obligaciones_beneficiario,publicidad_requerida,subcontratacion,modificaciones_permitidas,requisitos_tecnicos,criterios_valoracion,documentos_fase_solicitud,raw_gastos_subvencionables,raw_forma_justificacion,raw_plazo_ejecucion,raw_plazo_justificacion,raw_forma_pago,raw_compatibilidad,raw_publicidad,raw_garantias,raw_subcontratacion,extraction_model,extraction_confidence,extraction_error,markdown_path,pdf_page_count,pdf_word_count,staging_id,extracted_text,extracted_summary,summary_preview,ambito_geografico,extraction_id,embedding_vector,model_name,embedding_dimensions,text_length
+8,865923,null,"Convocatoria y bases reguladoras de la concesión de subvenciones destinadas a entidades o asociaciones culturales, juveniles, vecinales, de mujeres o cualquier otra de carácter social para el año 2025","CONVOCATORIA Y BASES REGULADORAS DE LA CONCESIÓN DE SUBVENCIONES DESTINADAS A ENTIDADES O ASOCIACIONES CULTURALES, JUVENILES, VECINALES, DE MUJER O CUALQUIER OTRA DE CARACTER SOCIAL PARA EL AÑO 2025",null,Ayuntamiento de Aranjuez,null,null,null,null,null,null,"[""ACTIVIDADES ARTÍSTICAS, RECREATIVAS Y DE ENTRETENIMIENTO""]","[""ES3 - COMUNIDAD DE MADRID""]",null,[],null,null,null,null,2025-12-14,null,false,null,null,null,null,null,null,false,null,"[{""id"":1346367,""long"":11747437,""datMod"":""2025-10-31"",""fechaAlta"":null,""nombreFic"":""1893840-Certificado Junta Gobierno 2025_10_30_ 12_7_ Aprobación convocatoria y bases subvenciones socio culturales 2025.PDF"",""descripcion"":""Documento de la convocatoria en español"",""idDocumento"":null,""urlDescarga"":null,""tipoDocumento"":null,""datPublicacion"":""2025-10-31""}]",false,https://www.infosubvenciones.es/bdnstrans/api/convocatorias/documentos?idDocumento=1346367,null,null,69fcb87e0441901cc42ef4ef8181327ee7db515d35f2adce7c52cc6295ee7c38,null,[],null,null,null,"{""id"":1067484,""mrr"":false,""ambito"":null,""codigo"":null,""fondos"":[],""nivel1"":null,""nivel2"":null,""objeto"":null,""organo"":{""nivel1"":""ARANJUEZ"",""nivel2"":""AYUNTAMIENTO DE ARANJUEZ"",""nivel3"":null},""titulo"":null,""abierto"":false,""textFin"":""14 DE DICIEMBRE DE 2025"",""anuncios"":[],""contacto"":null,""regiones"":[""ES3 - COMUNIDAD DE MADRID""],""sectores"":[""ACTIVIDADES ARTÍSTICAS, RECREATIVAS Y DE ENTRETENIMIENTO""],""categoria"":null,""finalidad"":null,""normativa"":[],""objetivos"":[],""organismo"":null,""codigoBDNS"":""865923"",""documentos"":[{""id"":1346367,""long"":11747437,""datMod"":""2025-10-31"",""fechaAlta"":null,""nombreFic"":""1893840-Certificado Junta Gobierno 2025_10_30_ 12_7_ Aprobación convocatoria y bases subvenciones socio culturales 2025.PDF"",""descripcion"":""Documento de la convocatoria en español"",""idDocumento"":null,""urlDescarga"":null,""tipoDocumento"":null,""datPublicacion"":""2025-10-31""}],""reglamento"":null,""textInicio"":""A PARTIR DE SU PUBLICACIÓN EN EL BOCAM"",""urlTramite"":null,""advertencia"":""La reutilización de los datos del Sistema Nacional de Publicidad de Subvenciones y Ayudas Públicas está sujeta a una serie de restricciones y consideraciones legales. Consulte el aviso legal en https://www.infosubvenciones.es/bdnstrans/GE/es/avisolegal.Además, el usuario debe ser consciente que la información presentada es de naturaleza dinámica, y que los datos pueden ser sometidos a correcciones, inserciones, modificaciones y eliminaciones en momentos posteriores a su extracción."",""ayudaEstado"":null,""descripcion"":""CONVOCATORIA Y BASES REGULADORAS DE LA CONCESIÓN DE SUBVENCIONES DESTINADAS A ENTIDADES O ASOCIACIONES CULTURALES, JUVENILES, VECINALES, DE MUJER O CUALQUIER OTRA DE CARACTER SOCIAL PARA EL AÑO 2025"",""organismoId"":null,""departamento"":null,""importeTotal"":null,""instrumentos"":[{""descripcion"":""SUBVENCIÓN Y ENTREGA DINERARIA SIN CONTRAPRESTACIÓN ""}],""importeMaximo"":null,""importeMinimo"":null,""observaciones"":null,""fechaRecepcion"":""2025-10-31"",""formaSolicitud"":null,""urlAyudaEstado"":null,""descripcionLeng"":null,""fechaResolucion"":null,""sedeElectronica"":""https://sede.aranjuez.es"",""basesReguladoras"":null,""compatibilidades"":null,""fechaPublicacion"":null,""presupuestoTotal"":52540,""tipoConvocatoria"":""Concurrencia competitiva - canónica"",""fechaFinSolicitud"":""2025-12-14"",""lugarPresentacion"":null,""sectoresProductos"":[],""tiposBeneficiario"":[],""numeroConvocatoria"":""865923"",""tipoAdministracion"":null,""tiposBeneficiarios"":[{""descripcion"":""PERSONAS JURÍDICAS QUE NO DESARROLLAN ACTIVIDAD ECONÓMICA""}],""tramiteElectronico"":false,""nivelAdministracion"":null,""urlBasesReguladoras"":""https://www.aranjuez.es/"",""descripcionFinalidad"":""Cultura"",""fechaInicioSolicitud"":null,""finalidadDescripcion"":null,""porcentajeFinanciacion"":null,""sePublicaDiarioOficial"":true,""requisitosBeneficiarios"":null,""beneficiariosDescripcion"":null,""descripcionBasesReguladoras"":""CONVOCATORIA Y BASES REGULADORAS DE LA CONCESIÓN DE SUBVENCIONES DESTINADAS A ENTIDADES O ASOCIACIONES CULTURALES, JUVENILES, VECINALES, DE MUJER O CUALQUIER OTRA DE CARACTER SOCIAL PARA EL AÑO 2025""}",infosubvenciones,2025-12-02 16:37:02.952559+00,2025-12-02 16:37:02.940134+00,COMPLETED,manual_865923_rerun,0,null,processor,2025-12-02 16:36:08.708323+00,95,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,gemini-2.5-flash-lite,0.95,null,D:\IT workspace\infosubvenciones-api\downloads\markdown\865923_3c02753c.md,18,2554,null,"# 865923_3c02753c
+
+**Source PDF**: 865923_3c02753c.pdf
+**Pages**: 18
+**Words**: 2554
+**Extraction Method**: pymupdf
+**Is Scanned**: False
+
+---
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+ARANJUEZ
+Ayuntamiento
+del Real Sitio y Villa
+Secretaría General
+LA SECRETARÍA GENERAL DEL ILMO. AYUNTAMIENTO DE ARANJUEZ,
+CERTIFICA:
+Que la Junta de Gobierno Local, en sesión ordinaria celebrada el día 30 de octubre de 2025,
+adoptó, entre otros, el siguiente acuerdo, que se extrae del borrador del acta pendiente de
+aprobación y a reserva de los términos que resulten de la aprobación del acta correspondiente, de
+conformidad con el artículo 206 del ROF:
+12.7. Propuesta que presenta la Concejala Delegada de Participación Ciudadana para
+aprobación de la convocatoria y bases reguladoras de la concesión de subvenciones
+destinadas a entidades o asociaciones culturales, juveniles, vecinales, de mujeres o
+cualquier otra de carácter social para el año 2025.
+Propuesta:
+Se da lectura de la siguiente propuesta suscrita el día 29 de octubre de 2025 por la Concejala
+Delegada de Participación Ciudadana:
+“Las asociaciones locales desempeñan un papel fundamental en la dinamización social, cultural,
+juvenil, vecinal, de mujeres o de cualquier otra de carácter social de nuestro municipio. Su labor
+voluntaria y comprometida contribuye al bienestar de nuestros vecinos y al fortalecimiento del
+tejido comunitario.
+En este sentido, el artículo 14 del Reglamento de Participación Ciudadana establece que, de
+acuerdo con sus recursos presupuestarios, el Ayuntamiento subvencionará económicamente a las
+Asociaciones para la defensa de intereses generales o sectoriales que se encuentren inscritas en
+el Registro Municipal de Asociaciones.
+Con el objetivo de apoyar y fomentar estas iniciativas, se propone la aprobación de la
+convocatoria municipal de subvenciones de 2025 en régimen de concurrencia competitiva,
+conforme a lo establecido en la Ley General de Subvenciones y la Ordenanza General de
+Subvenciones del Ayuntamiento de Aranjuez, aprobada en sesión plenaria el 20 de enero de 2006
+Siendo uno de los objetivos de este Equipo de Gobierno que las entidades y asociaciones socio
+culturales, juveniles, vecinales, de mujeres o cualquier otra de carácter social de la ciudad
+participen y promuevan proyectos, programas o actividades culturales o de interés social en
+Aranjuez, SE PROPONE A LA JUNTA DE GOBIERNO LOCAL:
+•
+LA APROBACIÓN DE LA CONVOCATORIA Y LAS BASES REGULADORAS DE LA
+CONCESIÓN DE SUBVENCIONES DESTINADAS A ENTIDADES O ASOCIACIONES
+SOCIO CULTURALES, JUVENILES, VECINALES, DE MUJERES O CUALQUIER OTRA
+DE CARÁCTER SOCIAL PARA EL AÑO 2025 ANEXAS A ESTA PROPUESTA”.
+Pág. 1 de 18
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 1 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 2 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+ARANJUEZ
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 3 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 4 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 5 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 6 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 7 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 8 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 9 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 10 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 11 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 12 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 13 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 14 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 15 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 16 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 17 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+
+DOCUMENTO
+IDENTIFICADORES
+ESTADO
+FIRMAS
+OTROS DATOS
+Delegación de Régimen Interior
+Secretaría General
+Secretaría General
+Informe de la Intervención General:
+En el expediente consta informe de fiscalización de conformidad de la Intervención General, de
+fecha 29 de octubre de 2025.
+Informe de la Secretaría General:
+En el expediente consta informe favorable de la Secretaría General, de fecha 29 de octubre de
+2025.
+Acuerdo:
+Se acuerda por unanimidad aprobar la propuesta anteriormente transcrita.
+Y para que así conste, a los únicos efectos de fe pública, expido el presente en la fecha y hora
+que aparece junto con la firma electrónica, y con el visto bueno del Alcalde-Presidente.
+Firmado electrónicamente.
+Junta de Gobierno Local ordinaria de 30 de octubre de 2025.
+Pág. 18 de 18
+ARANJUEZ
+Ayuntamiento
+del Real Sitio y Villa
+.Certificado: Certificado Junta Gobierno 2025.10.30. 12.7.
+Aprobación convocatoria y bases subvenciones socio culturales
+2025
+Código para validación: 3R2B0-K6L9U-IW47N
+Fecha de emisión: 30 de Octubre de 2025 a las 14:56:03
+Página 18 de 18
+El documento ha sido firmado por :
+1.- Secretario General del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 12:45
+2.- Alcalde-Presidente del ILMO. AYUNTAMIENTO DE ARANJUEZ. Firmado 30/10/2025 14:54
+FIRMADO
+30/10/2025 14:54
+Esta es una copia impresa del documento electrónico (Ref: 1893840 3R2B0-K6L9U-IW47N 4A2E64CFAA02DAA7B6FA248F93274F96FEBEAFE5) generada con la aplicación informática Firmadoc. El documento está FIRMADO. Mediante el código de
+verificación puede comprobar la validez de la firma electrónica de los documentos firmados en la dirección web: https://sede.aranjuez.es/
+","Aquí tienes un resumen de la convocatoria de subvenciones, centrado en los puntos solicitados:
+
+**Resumen de la Convocatoria de Subvenciones del Ayuntamiento de Aranjuez para 2025**
+
+**Objetivo:**
+El objetivo principal de esta convocatoria es apoyar y fomentar las iniciativas de las entidades y asociaciones locales que contribuyen a la dinamización social, cultural, juvenil, vecinal, de mujeres o de cualquier otra índole social en el municipio de Aranjuez. Se busca que estas entidades participen y promuevan proyectos, programas o actividades de interés social y cultural en la ciudad.
+
+**Beneficiarios:**
+Podrán ser beneficiarias de estas subvenciones las entidades o asociaciones locales de carácter cultural, juvenil, vecinal, de mujeres o cualquier otra de carácter social. Para ser elegibles, estas asociaciones deben estar inscritas en el Registro Municipal de Asociaciones y defender intereses generales o sectoriales.
+
+**Cuantías:**
+El texto proporcionado no especifica las cuantías concretas de las subvenciones que se concederán. Se menciona que el Ayuntamiento subvencionará económicamente a las asociaciones de acuerdo con sus recursos presupuestarios.
+
+**Plazos:**
+El texto de la convocatoria no detalla los plazos de presentación de solicitudes, ni las fechas de inicio o fin del periodo de ejecución de los proyectos subvencionados.
+
+**Requisitos:**
+Los requisitos principales mencionados son:
+*   Ser una entidad o asociación local de carácter cultural, juvenil, vecinal, de mujeres o de cualquier otra índole social.
+*   Estar inscrita en el Registro Municipal de Asociaciones del Ayuntamiento de Aranjuez.
+*   Defender intereses generales o sectoriales.
+
+**Información Faltante:**
+La información más relevante que falta en el texto proporcionado es:
+*   Las cuantías específicas de las subvenciones.
+*   Los plazos de presentación de solicitudes.
+*   Los criterios de evaluación y concesión de las ayudas.
+*   Los gastos subvencionables.
+*   La documentación necesaria para la solicitud.
+*   Las fechas de inicio y fin de los proyectos.","Aquí tienes un resumen de la convocatoria de subvenciones, centrado en los puntos solicitados:
+
+**Resumen de la Convocatoria de Subvenciones del Ayuntamiento de Aranjuez para 2025**
+
+**Objetivo:**
+El objetivo principal de esta convocatoria es apoyar y fomentar las iniciativas de las entidades y asociaciones locales que contribuyen a la dinamización social, cultural, juvenil, vecinal, de mujeres o de cualquier otra índole social en el municipio de Aranjuez. Se busca que estas entidades participen",Aranjuez,13,"[-0.04050249,0.0508724,0.006851654,0.0034667014,0.0055111367,0.046244018,-0.0024859384,0.041156,0.013872005,-0.051105212,0.033261195,0.05286326,0.01770471,0.030219056,0.061643742,0.023177637,0.036423948,0.024224602,-0.0464729,-0.010815626,-0.048287798,0.014573873,-0.041391484,-0.0046975873,-0.028561912,-0.05846882,0.031050721,-0.019393781,0.030157613,-0.050105747,-0.004614147,0.021572316,0.008517321,-0.059330173,0.028667994,0.033142254,-0.016627911,-0.05085972,0.058028266,-0.03119688,0.009092781,0.033631455,0.0029130238,-0.057635885,-0.062903404,-0.042965285,-0.0063735615,-0.008242968,-0.028676545,-0.02839058,0.03732464,-0.06026613,-0.0017221997,-0.0060341028,-0.08715811,-0.02911594,-0.079724066,-0.053298146,0.06475162,0.0009870405,0.0074077128,0.0011811669,-0.038544405,-0.045933533,0.0027216433,0.05851999,0.006029482,-0.047441386,-0.022789428,-0.05692566,-0.0036900856,0.021040939,-0.0877367,0.018844826,-0.0062140296,0.006728472,0.013180884,-0.08715532,0.05661177,0.012587736,-0.0166291,0.029595071,-0.0032983,0.09710478,-0.003948442,-0.033621635,-0.0471355,-0.058184996,-0.08276753,-0.018175386,0.059597053,0.008485894,0.0049201185,0.052886777,0.091306634,-0.003798181,-0.016608067,-0.064901456,0.017436909,0.022398021,0.015635096,-0.0014700227,0.022633815,-0.013524158,0.061718773,-0.009860918,0.046217695,-0.0122698005,0.0020969242,0.06042553,0.013220176,0.04133202,0.023904817,0.02391003,-0.055571858,-0.00040317854,0.011414221,0.045907084,-0.020608352,-0.013141342,0.03707384,0.07103564,-0.022214806,0.10163967,0.02069199,0.0019510181,-0.006682595,-0.03476124,-0.039497558,-0.016966823,0.045023788,-0.052108075,-0.0027654709,0.047453295,-0.0013129506,-0.036342036,-0.0013969153,0.03047303,-0.068984866,0.01637513,-0.004116245,-0.009984078,-0.06287216,-0.029267557,0.049982674,-0.037003506,0.06819302,0.012739734,0.027168727,0.030379286,-0.072631836,-0.0016794098,0.02412883,-0.0437579,0.0003667618,-0.03156411,-0.0148940245,-0.0034074972,0.01592606,-0.020856436,0.028912002,-0.04717918,-0.006454741,0.020848991,0.055610828,-0.05399162,4.4887012e-05,-0.1050526,0.011023839,0.015938291,-0.004517328,-0.020430014,-0.019141408,-0.019203356,-0.0350122,0.063770406,-0.011809031,0.06526592,-0.016277574,-0.047209885,0.047928806,0.051064525,-0.004946271,0.011601129,-0.0077601112,-0.04034955,-0.039066676,0.04884581,0.029985953,0.0022718161,0.04441531,-0.035931848,-0.01742929,0.012907663,-0.010204966,0.06376197,0.060286272,-0.015431235,-0.009417562,-0.04362702,0.024297126,0.014083615,-0.0018913824,-0.01879963,-0.00893999,-0.001274637,-0.00030876376,-0.046376117,-0.07649775,-0.013699213,-0.041201465,-0.03523767,0.031811398,-0.055482116,-0.038513668,0.030420924,0.009355459,0.036946222,0.062101707,-0.0022854183,-0.031547893,-0.029701415,-0.04919797,0.011705767,0.041441053,0.014936056,0.08229332,0.04998319,0.008413141,-0.06174274,-0.0095565375,0.055939436,-0.0094498545,0.030840717,0.017945405,0.058342796,-0.011453804,-0.017505195,0.01287771,-0.0061670337,0.0076655005,-0.0061088908,0.021337554,-0.06602662,0.039264776,0.005227631,0.024055902,-0.0061755497,-0.03247587,-0.009321514,-0.011005138,0.0065541873,-0.07148721,0.011014348,-0.056505892,0.010343282,0.051151104,-0.03133553,-0.008716065,-0.03492952,0.045096975,-0.036714144,0.005823881,0.011791317,-0.043462276,0.002464699,-0.027748058,-0.03805608,0.032144368,-0.0550223,-0.0042090076,-0.025594778,-0.04567595,-0.024248486,-0.06265774,-0.010237322,-0.011640126,0.015227504,-0.095401525,0.0296315,0.011806479,-0.06429898,-0.005052497,0.01021524,-0.0049938997,-0.004756528,-0.05484857,0.026881628,0.024925571,-0.0058528064,-0.009602326,0.07349802,0.0045480714,-0.011414187,0.034854673,-0.0023642175,0.03760113,0.07800147,-0.031233767,-0.039874088,-0.036207177,-0.012941892,-0.0015005381,0.02683209,-0.021436013,-0.013679737,-0.049955685,0.00982286,-0.021590171,0.043547936,0.01432558,0.005369835,-0.07554341,-0.009646102,-0.031503145,-0.032084122,-0.093135506,-0.012009199,-0.009402362,0.028892636,0.028652526,-0.046976972,-0.015288184,-0.022216318,0.03881746,-0.009274206,0.011642151,-0.011160168,0.008016285,0.028805539,-0.010097332,-0.0019573306,-0.032928206,0.010467105,0.019904837,0.02313134,-0.065074936,0.017528402,0.005169177,0.037136182,0.05037478,0.0024265954,0.027982466,-0.0037016203,0.038183864,0.01743494,-0.014111533,0.033862095,0.010240824,0.018548675,0.026841385,0.10453,-0.020187728,0.02305385,0.0121445805,-0.0191448,0.05080325,0.03444641,0.020390676,0.0033511813,-0.010013044,-0.017470513,0.023673413,0.09242175,-0.004046199,-0.03631495,-0.0072976784,0.040399782,0.028004335,0.023698883,0.014757304,0.013535206,0.007402758,-0.022506513,-0.03326781,-0.037906677,-0.0066767554,0.047382314,0.021392344,0.018984994,-0.031596094,-0.008823684,-0.05229592,0.02638829,0.0026561527,0.020708006,-0.007150354,0.023818685,-0.024234802,0.013116499,-0.002435097,-0.01430265,0.038026065,0.046818994,0.030081507,0.018681552,0.0072928783,0.062194183,0.001922545,-0.016822793,0.027956614,-0.039271504,0.0025902186,-0.023302743,-0.0074544866,-0.02347676,0.09662173,0.010301104,0.016586466,-0.02354737,-0.038330466,-0.049720794,-0.027654327,0.057250787,-0.034515634,0.010257989,0.03856017,0.023631347,-0.013616665,0.024111964,0.0018972624,0.028049083,0.03009768,0.017945807,-0.010371902,-0.0058416445,-0.022553895,0.02776899,-0.022943992,0.016798362,0.023065792,0.008195399,0.040902093,0.016770223,0.04601631,0.010761871,0.03390719,-0.08817989,-0.05373572,0.041610602,-0.024073945,-0.021710232,-0.014047209,-0.047838062,0.04754715,0.031680327,-0.023228204,-0.016488496,-0.022142915,-0.038878106,-0.0018340056,0.0064330804,-0.030006554,-0.015925959,-0.06928405,0.024779059,0.060643416,0.01733583,0.0101758605,0.061092768,-0.055886693,0.033131834,0.0128960945,-0.014774731,-0.023234487,0.005097339,0.027158031,0.010021898,-0.0031230985,0.025496233,0.06824586,0.00076632365,0.034956254,0.020441597,-0.058613885,0.05528571,0.050382994,-0.03954149,-0.007075176,-0.050882198,-0.014021052,-0.010651059,0.008891661,-0.014512144,0.07887788,0.008920752,0.00043162386,-0.045100465,-0.05507048,-0.06430937,0.023312893,-0.031930633,-0.05244298,-0.016950969,0.04094997,-0.042998303,0.014233939,0.028180212,-0.027625581,0.021599006,0.046413887,0.0044473624,0.0033034328,-0.04824194,0.0027387845,-0.0028608134,-0.020942895,0.031103106,-0.003745848,0.054239675,0.03166568,0.0008053269,0.007984687,-0.015331951,-0.0029529568,-0.01745572,-0.013012194,-0.012946858,-0.025258314,0.025880821,-0.03105849,-0.0042235656,0.030098962,-0.031059626,-0.031863768,-0.034495026,0.015919546,-0.042471852,-0.011067915,-0.0046841563,0.0034077035,0.026217293,0.05857761,0.005277544,-0.022611942,0.06929735,0.002067387,0.007942989,0.023359092,0.012001991,0.0046615642,0.05341279,-0.00951248,0.009109359,-0.0030081342,0.012363916,-0.0055087092,0.03967836,-0.005434538,0.003775642,0.02017225,0.0039411862,-0.0072109257,0.026948424,0.050794456,0.013901293,0.092618495,0.0037952939,-0.053873222,-0.027259449,-0.031230858,-0.03584721,0.03121876,-0.07074437,-0.0011129896,-0.015838675,-0.039504737,0.010009066,-0.006796512,-0.056734476,0.010623854,0.01981735,-0.037581593,-0.03379404,0.02381644,-0.05600854,-0.04647836,0.02176066,0.028229583,-0.022804463,0.08139017,-0.011920429,0.035723906,-0.023551695,0.053875856,-0.039983828,-0.0038202656,-0.05067982,0.05975428,0.020081092,0.020500593,-0.006942285,0.00529783,-0.033348996,-0.0036607725,-0.031068506,-0.046861358,0.0019912731,0.031418834,-0.0141274175,0.045881562,-0.06279351,0.046448004,0.021031898,-0.044667467,-0.07539447,-0.05345544,-0.0707376,-0.012977957,-0.018332766,-0.021053212,0.023036929,0.013678701,-0.036365014,-0.081179485,0.098711915,-0.010311599,-0.07892432,0.001959791,0.0028052886,0.048311185,-0.0062424745,-0.039876495,-0.004988724,0.021840189,0.032858107,0.02757686,-0.005859728,0.050522607,0.045859545,-0.0012166649,0.035706047,0.012319009,-0.021897452,-0.032370433,0.015215601,-0.081244834,-0.0077149333,0.03814793,-0.025145605,0.025894377,-0.0026529403,0.10702665,0.016258774,-0.001380312,0.073203586,-0.032945957,0.005673732,-0.01946107,0.035615034,0.035264526,0.056036104,-0.0099366205,0.00203923,-0.07098277,0.025006004,-0.012688805,-0.030012503,0.035477936,0.039470095,0.0042426344,0.01413711,0.05540843,-0.04733312,-0.038563184,0.001241605,-0.046725903,-0.0073178792,-0.027924556,-0.02392183,-0.024981761,0.004291971,-0.009948547,-0.0052497247,-0.0267754,0.0063141505,-0.002562439,-0.022131192,-0.035845105,-0.042066153,0.018067876,0.039387263,0.02497351,-0.038510967,0.0032035639,0.024374567,-0.0123862745,-0.0292877,-0.006435106,-0.0003119064,-0.0150272185,-0.042786475,-0.045596916,0.008813538,-0.024214916,0.033454653,-0.005401313,0.024610186,-0.066242695,0.049893282,-0.052444298,-0.046920333,-0.04215742,-0.056263175,-0.021817883,-0.042514235,0.041595884,-0.009987591,-0.04743597,-0.007986454,-0.030451557,0.01999422,0.071850374,0.035810836,0.03371764,0.030770784,0.004677959,0.047425326,0.036108974,-0.02913714,0.0010586167,-0.023141613,0.019060923,-0.004372428,0.04104355,-0.0033326522,-0.07004409,0.0024477309,-0.02996393,0.02936536,0.08498775,-0.005506559,-0.05676341,0.07313869,-0.07792415,-0.015895631,0.063129336,0.0057718735,0.003992682,-0.0077904533,0.035488952,-0.023597842,-0.00532316,-0.036588546,-0.002657571,-0.017008848,0.011071225,-0.020232696,-9.049024e-05,0.07763662,0.019686412,0.019746423,0.019954527,0.0152607085,0.0017248623,0.028220607,0.009050915,-0.051714696,0.019745586,0.026815074,0.026540283,-0.015631717,0.03304205,0.015382044,-0.049315922,-0.00872281,0.08957589,-0.016812384]",text-embedding-004,768,606

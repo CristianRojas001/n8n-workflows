@@ -1,0 +1,64 @@
+# Workspace-level ignores
+/.vscode/
+/.claude/
+/.tmp.driveupload/
+/Archive/
+/Backup/
+/VOOM/
+/n8n-mcp-test/
+/realAdvisor/
+/invoice workflow/
+/ARTISTING-main/
+*.zip
+nul
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.venv/
+**/.venv/
+env/
+venv/
+
+# Environment files
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Node
+node_modules/
+**/node_modules/
+dist/
+build/
+npm-debug.log*
+yarn-error.log*
+
+# Project data and outputs
+/infosubvenciones-api/.vscode/
+/infosubvenciones-api/.claude/
+/infosubvenciones-api/__pycache__/
+/infosubvenciones-api/.env
+/infosubvenciones-api/ARTISTING-main/
+/infosubvenciones-api/downloads/
+/infosubvenciones-api/outputs/
+/infosubvenciones-api/relevant_pdfs/
+/infosubvenciones-api/infosubvenciones-api-backup*.zip
+/infosubvenciones-api/Ingestion/.env
+/infosubvenciones-api/interface/node_modules/
+/infosubvenciones-api/interface/dist/
+/infosubvenciones-api/interface/.env
+/infosubvenciones-api/interface/.next/
+/infosubvenciones-api/interface/.turbo/
+/infosubvenciones-api/interface/.vite/
+
+# Generated result files
+/infosubvenciones-api/batch_extraction_results.json
+/infosubvenciones-api/extracted_pdf_data.json
+/infosubvenciones-api/token_estimation_results.xlsx
+/infosubvenciones-api/token_estimation_results_NEW.xlsx
