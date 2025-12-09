@@ -93,9 +93,9 @@ For large-scale data fetching, you can run the tasks asynchronously using a Cele
     ```
 
 2.  **Trigger a Task**:
-    You can trigger tasks from a Python shell or another script. For example, to fetch 1000 grants:
+    You can trigger tasks from a Python shell or another script. For example, to fetch 100 grants:
 
     ```python
     from Ingestion.tasks.fetcher import fetch_batch
-    fetch_batch.delay(finalidad="11", batch_id="culture_batch_01", total_items=1000)
+    fetch_batch.delay(finalidad="11", batch_id="culture_batch_01", total_items=100)
     ```

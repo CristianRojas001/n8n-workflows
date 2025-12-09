@@ -13,6 +13,8 @@ import hashlib
 import logging
 from datetime import datetime
 from typing import Optional, Dict, Any, List
+import json
+import re
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
@@ -25,6 +27,88 @@ from schemas.api_response import ConvocatoriaDetail
 
 # Set up logging
 logger = logging.getLogger(__name__)
+
+
+def _normalize_beneficiarios(raw_list: Optional[List[str]], raw_objs: Optional[List[Dict[str, Any]]]) -> List[str]:
+    """Map beneficiary descriptions to a controlled set of buckets."""
+    buckets = set()
+    candidates: List[str] = []
+    if raw_list:
+        candidates.extend([c for c in raw_list if c])
+    if raw_objs:
+        for obj in raw_objs:
+            if isinstance(obj, dict):
+                val = obj.get('descripcion') or obj.get('nombre') or obj.get('tipo')
+                if val:
+                    candidates.append(val)
+
+    for val in candidates:
+        text = val.lower()
+        if any(k in text for k in ['autónomo', 'autonom', 'persona física que desarrolla']):
+            buckets.add('Autonomo')
+        if any(k in text for k in ['pyme', 'pymes', 'microempresa', 'empresa', 'sociedad']):
+            buckets.add('Empresa')
+        if 'gran empresa' in text:
+            buckets.add('Empresa')
+        if any(k in text for k in ['ayuntamiento', 'diputación', 'diputacion', 'cabildo', 'consell', 'entidad local', 'corporación local', 'corporacion local', 'municip', 'comarca']):
+            buckets.add('Entidad local')
+        if any(k in text for k in ['fundación', 'fundacion', 'asociación', 'asociacion', 'ong', 'sin ánimo de lucro', 'sin animo de lucro']):
+            buckets.add('ONG')
+        if any(k in text for k in ['universidad', 'centro universit', 'campus']):
+            buckets.add('Universidad')
+        if 'cooperativa' in text:
+            buckets.add('Cooperativa')
+        if any(k in text for k in ['organismo', 'ente público', 'ente publico', 'empresa pública', 'empresa publica']):
+            buckets.add('Organismo público')
+
+    return sorted(buckets)
+
+
+def _normalize_sectores(sectores: Optional[List[str]], sectores_productos: Optional[List[Any]]) -> List[str]:
+    """Choose the best available sector labels (API first, then productos)."""
+    out: List[str] = []
+    if sectores:
+        out.extend([s for s in sectores if s])
+    elif sectores_productos:
+        for item in sectores_productos:
+            if isinstance(item, dict):
+                val = item.get('descripcion') or item.get('nombre') or item.get('codigo')
+                if val:
+                    out.append(val)
+            elif isinstance(item, str):
+                out.append(item)
+    # Deduplicate while preserving order
+    seen = set()
+    deduped: List[str] = []
+    for s in out:
+        if s not in seen:
+            seen.add(s)
+            deduped.append(s)
+    return deduped
+
+
+def _parse_region_codes(regiones: Optional[List[str]]) -> List[str]:
+    """Extract NUTS codes from strings like 'ES51 - CATALUÑA'."""
+    codes: List[str] = []
+    if not regiones:
+        return codes
+    for reg in regiones:
+        if not reg:
+            continue
+        if isinstance(reg, str) and ' - ' in reg:
+            code = reg.split(' - ', 1)[0].strip()
+            if code:
+                codes.append(code)
+        elif isinstance(reg, str) and re.match(r'^[A-Z]{2,3}\\d+', reg):
+            codes.append(reg.strip())
+    # Deduplicate
+    seen = set()
+    deduped: List[str] = []
+    for c in codes:
+        if c not in seen:
+            seen.add(c)
+            deduped.append(c)
+    return deduped
 
 
 def _hash_pdf_url(pdf_url: Optional[str]) -> Optional[str]:
@@ -40,6 +124,8 @@ def _extract_pdf_info(detail: ConvocatoriaDetail) -> Dict[str, Any]:
 
     Returns dict with: tiene_pdf, pdf_url, pdf_nombre, pdf_id_documento, pdf_hash
     """
+    base_url = getattr(InfoSubvencionesClient, "BASE_URL", "https://www.infosubvenciones.es/bdnstrans/api")
+
     pdf_info = {
         'tiene_pdf': False,
         'pdf_url': None,
@@ -55,9 +141,21 @@ def _extract_pdf_info(detail: ConvocatoriaDetail) -> Dict[str, Any]:
     # Find the first PDF document (usually "Convocatoria completa" or similar)
     for doc in detail.documentos:
         # Check if document has a URL and looks like a PDF
-        url = doc.urlDocumento if hasattr(doc, 'urlDocumento') else None
-        nombre = doc.nombreDocumento if hasattr(doc, 'nombreDocumento') else None
-        id_doc = doc.idDocumento if hasattr(doc, 'idDocumento') else None
+        def _get_field(obj, key):
+            if hasattr(obj, key):
+                return getattr(obj, key)
+            if isinstance(obj, dict):
+                return obj.get(key)
+            return None
+
+        # Prefer explicit download URLs; fall back to any URL-like field
+        url = _get_field(doc, 'urlDocumento') or _get_field(doc, 'urlDescarga')
+        nombre = _get_field(doc, 'nombreDocumento') or _get_field(doc, 'nombreFic')
+        id_doc = _get_field(doc, 'idDocumento') or _get_field(doc, 'id')
+
+        # If API didn't give a URL but gave an id, synthesize the download endpoint
+        if not url and id_doc:
+            url = f"{base_url}/convocatorias/documentos?idDocumento={id_doc}"
 
         if url and (url.lower().endswith('.pdf') or 'pdf' in url.lower()):
             pdf_info['tiene_pdf'] = True
@@ -66,6 +164,14 @@ def _extract_pdf_info(detail: ConvocatoriaDetail) -> Dict[str, Any]:
             pdf_info['pdf_id_documento'] = str(id_doc) if id_doc else None
             pdf_info['pdf_hash'] = _hash_pdf_url(url)
             break
+
+    # Fallback: build convocatoria-level PDF endpoint if no document URL found
+    if not pdf_info['pdf_url'] and detail.id:
+        fallback_url = f"{base_url}/convocatorias/pdf?id={detail.id}&vpd=GE"
+        pdf_info['tiene_pdf'] = True
+        pdf_info['pdf_url'] = fallback_url
+        pdf_info['pdf_id_documento'] = str(detail.id)
+        pdf_info['pdf_hash'] = _hash_pdf_url(fallback_url)
 
     return pdf_info
 
@@ -94,6 +200,51 @@ def _convert_detail_to_convocatoria(detail: ConvocatoriaDetail, batch_id: Option
         except (ValueError, AttributeError):
             return None
 
+    # Normalize organo and administrative hierarchy
+    organo_obj = getattr(detail, 'organo', None)
+    if hasattr(organo_obj, 'model_dump'):
+        organo_obj = organo_obj.model_dump()
+
+    nivel1_val = getattr(detail, 'nivel1', None) or (organo_obj.get('nivel1') if isinstance(organo_obj, dict) else None)
+    nivel2_val = getattr(detail, 'nivel2', None) or (organo_obj.get('nivel2') if isinstance(organo_obj, dict) else None)
+    nivel3_val = (organo_obj.get('nivel3') if isinstance(organo_obj, dict) else None)
+
+    admin_path_parts = [p for p in [nivel1_val, nivel2_val, nivel3_val] if p]
+    admin_path_normalized = " > ".join(admin_path_parts).lower() if admin_path_parts else None
+
+    administracion = None
+    if organo_obj or admin_path_parts:
+        administracion = {
+            'nivel1': nivel1_val,
+            'nivel2': nivel2_val,
+            'nivel3': nivel3_val,
+            'organo': organo_obj
+        }
+
+    # Normalize beneficiaries/sectors/regions
+    beneficiaries_norm = _normalize_beneficiarios(detail.tiposBeneficiario, getattr(detail, 'tiposBeneficiarios', None))
+    sectores_norm = _normalize_sectores(detail.sectores, getattr(detail, 'sectoresProductos', None))
+    region_codes = _parse_region_codes(detail.regiones if detail.regiones else [])
+
+    # Dates
+    fecha_publicacion = parse_date(detail.fechaPublicacion or getattr(detail, 'fechaRecepcion', None))
+    fecha_inicio = parse_date(detail.fechaInicioSolicitud)
+    fecha_fin = parse_date(detail.fechaFinSolicitud)
+    fecha_resolucion = parse_date(detail.fechaResolucion)
+
+    # Derived: is open now?
+    is_open_now = None
+    try:
+        today = datetime.utcnow().date()
+        if fecha_inicio and fecha_fin:
+            is_open_now = (fecha_inicio.date() <= today <= fecha_fin.date())
+        elif fecha_inicio and not fecha_fin:
+            is_open_now = (fecha_inicio.date() <= today)
+        elif fecha_fin and not fecha_inicio:
+            is_open_now = (today <= fecha_fin.date())
+    except Exception:
+        is_open_now = None
+
     # Create Convocatoria model
     convocatoria = Convocatoria(
         # Identification
@@ -113,21 +264,26 @@ def _convert_detail_to_convocatoria(detail: ConvocatoriaDetail, batch_id: Option
         # Classification
         finalidad=str(detail.finalidad) if detail.finalidad else None,
         finalidad_descripcion=detail.finalidadDescripcion,
-        sectores=detail.sectores if detail.sectores else [],
+        sectores=detail.sectores if detail.sectores else (detail.sectoresProductos if hasattr(detail, 'sectoresProductos') and detail.sectoresProductos else []),
         regiones=detail.regiones if detail.regiones else [],
+        sectores_normalizados=sectores_norm,
+        region_nuts=region_codes,
         ambito=detail.ambito,
 
         # Beneficiaries
         tipos_beneficiario=detail.tiposBeneficiario if detail.tiposBeneficiario else [],
         beneficiarios_descripcion=detail.beneficiariosDescripcion,
         requisitos_beneficiarios=detail.requisitosBeneficiarios,
+        beneficiarios_normalizados=beneficiaries_norm,
 
         # Dates
-        fecha_publicacion=parse_date(detail.fechaPublicacion),
-        fecha_inicio_solicitud=parse_date(detail.fechaInicioSolicitud),
-        fecha_fin_solicitud=parse_date(detail.fechaFinSolicitud),
-        fecha_resolucion=parse_date(detail.fechaResolucion),
+        # Fallback: use fechaRecepcion when fechaPublicacion is missing
+        fecha_publicacion=fecha_publicacion,
+        fecha_inicio_solicitud=fecha_inicio,
+        fecha_fin_solicitud=fecha_fin,
+        fecha_resolucion=fecha_resolucion,
         abierto=detail.abierto if detail.abierto is not None else False,
+        is_open_now=is_open_now,
 
         # Amounts
         importe_total=detail.importeTotal,
@@ -155,6 +311,35 @@ def _convert_detail_to_convocatoria(detail: ConvocatoriaDetail, batch_id: Option
         compatibilidades=detail.compatibilidades,
         contacto=detail.contacto.model_dump() if detail.contacto else None,
         observaciones=detail.observaciones,
+
+        # Extra API fields
+        mrr=detail.mrr if hasattr(detail, 'mrr') else None,
+        fondos=detail.fondos if hasattr(detail, 'fondos') else [],
+        nivel1=nivel1_val,
+        nivel2=nivel2_val,
+        organo=organo_obj if hasattr(detail, 'organo') else None,
+        administracion=administracion,
+        admin_path_normalized=admin_path_normalized,
+        text_inicio=getattr(detail, 'textInicio', None),
+        text_fin=getattr(detail, 'textFin', None),
+        anuncios=detail.anuncios if hasattr(detail, 'anuncios') else [],
+        objetivos=detail.objetivos if hasattr(detail, 'objetivos') else [],
+        codigo_bdns=getattr(detail, 'codigoBDNS', None),
+        reglamento=json.dumps(detail.reglamento, ensure_ascii=False) if hasattr(detail, 'reglamento') and isinstance(detail.reglamento, (dict, list)) else getattr(detail, 'reglamento', None),
+        advertencia=getattr(detail, 'advertencia', None),
+        ayuda_estado=getattr(detail, 'ayudaEstado', None),
+        url_ayuda_estado=getattr(detail, 'urlAyudaEstado', None),
+        instrumentos=detail.instrumentos if hasattr(detail, 'instrumentos') else [],
+        descripcion_leng=getattr(detail, 'descripcionLeng', None),
+        sede_electronica=getattr(detail, 'sedeElectronica', None),
+        presupuesto_total=getattr(detail, 'presupuestoTotal', None),
+        tipo_convocatoria=getattr(detail, 'tipoConvocatoria', None),
+        sectores_productos=detail.sectoresProductos if hasattr(detail, 'sectoresProductos') else [],
+        tipos_beneficiarios_raw=detail.tiposBeneficiarios if hasattr(detail, 'tiposBeneficiarios') else [],
+        url_bases_reguladoras=getattr(detail, 'urlBasesReguladoras', None),
+        descripcion_finalidad=getattr(detail, 'descripcionFinalidad', None),
+        se_publica_diario_oficial=getattr(detail, 'sePublicaDiarioOficial', None),
+        descripcion_bases_reguladoras=getattr(detail, 'descripcionBasesReguladoras', None),
 
         # Raw data (for debugging)
         raw_api_response=detail.model_dump(),
@@ -256,6 +441,9 @@ def fetch_convocatorias(
                 logger.debug(f"Fetching detail for: {numero}")
                 detail = client.get_convocatoria_detail(numero)
 
+                # Extract PDF info once for reuse
+                pdf_info = _extract_pdf_info(detail)
+
                 # Convert to database model
                 convocatoria = _convert_detail_to_convocatoria(detail, batch_id)
 
@@ -282,7 +470,9 @@ def fetch_convocatorias(
                     status=ProcessingStatus.PENDING,
                     batch_id=batch_id,
                     last_stage='fetcher',
-                    retry_count=0
+                    retry_count=0,
+                    pdf_url=pdf_info['pdf_url'],
+                    pdf_hash=pdf_info['pdf_hash']
                 )
                 db.add(staging_item)
                 db.commit()

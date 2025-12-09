@@ -82,6 +82,39 @@ class Convocatoria(Base):
     contacto = Column(JSONB, nullable=True)  # Contact information
     observaciones = Column(Text, nullable=True)  # Observations/notes
 
+    # === API EXTRA FIELDS (not originally mapped) ===
+    mrr = Column(Boolean, nullable=True)
+    fondos = Column(JSONB, nullable=True)  # Funding sources array
+    nivel1 = Column(String(255), nullable=True)
+    nivel2 = Column(String(255), nullable=True)
+    organo = Column(JSONB, nullable=True)  # Organo object with niveles
+    administracion = Column(JSONB, nullable=True)  # Combined admin hierarchy (nivel1/nivel2/nivel3 + organo)
+    admin_path_normalized = Column(Text, nullable=True, index=True)  # Normalized path for search (e.g., "nivel1 > nivel2 > nivel3")
+    region_nuts = Column(ARRAY(String), nullable=True, index=True)  # NUTS codes (parsed from regiones or LLM)
+    sectores_normalizados = Column(ARRAY(String), nullable=True, index=True)  # Normalized sector/CNAE labels
+    beneficiarios_normalizados = Column(ARRAY(String), nullable=True, index=True)  # Normalized beneficiary buckets
+    is_open_now = Column(Boolean, default=None, index=True)  # Derived: now between fecha_inicio/fin
+    text_inicio = Column(Text, nullable=True)  # Free-text start info
+    text_fin = Column(Text, nullable=True)  # Free-text end info
+    anuncios = Column(JSONB, nullable=True)  # Announcements
+    objetivos = Column(JSONB, nullable=True)  # Objectives array
+    codigo_bdns = Column(String(100), nullable=True)
+    reglamento = Column(Text, nullable=True)
+    advertencia = Column(Text, nullable=True)
+    ayuda_estado = Column(Text, nullable=True)
+    url_ayuda_estado = Column(Text, nullable=True)
+    instrumentos = Column(JSONB, nullable=True)
+    descripcion_leng = Column(Text, nullable=True)
+    sede_electronica = Column(Text, nullable=True)
+    presupuesto_total = Column(String(100), nullable=True)
+    tipo_convocatoria = Column(String(200), nullable=True)
+    sectores_productos = Column(JSONB, nullable=True)
+    tipos_beneficiarios_raw = Column(JSONB, nullable=True)  # Raw objects array
+    url_bases_reguladoras = Column(Text, nullable=True)
+    descripcion_finalidad = Column(Text, nullable=True)
+    se_publica_diario_oficial = Column(Boolean, nullable=True)
+    descripcion_bases_reguladoras = Column(Text, nullable=True)
+
     # === RAW DATA ===
     raw_api_response = Column(JSONB, nullable=True)  # Full API response (for debugging)
 

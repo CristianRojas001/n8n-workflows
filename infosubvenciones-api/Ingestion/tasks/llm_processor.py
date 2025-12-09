@@ -322,6 +322,29 @@ def process_with_llm(self, extraction_id: int, force_reprocess: bool = False) ->
                         convocatoria.titulo = extraction.titulo
                         logger.info(f"Updated convocatoria titulo: {extraction.titulo[:50]}...")
 
+                    # Backfill sectors from LLM if API sectors are empty
+                    if (not convocatoria.sectores or len(convocatoria.sectores) == 0) and extraction.sectores_inferidos:
+                        convocatoria.sectores = extraction.sectores_inferidos
+                        logger.info("Updated convocatoria sectores from LLM")
+                    # Backfill normalized sectors if missing
+                    if (not convocatoria.sectores_normalizados or len(convocatoria.sectores_normalizados) == 0):
+                        if convocatoria.sectores and len(convocatoria.sectores) > 0:
+                            convocatoria.sectores_normalizados = convocatoria.sectores
+                        elif extraction.sectores_inferidos:
+                            convocatoria.sectores_normalizados = extraction.sectores_inferidos
+                            logger.info("Updated convocatoria sectores_normalizados from LLM")
+                    # Backfill beneficiaries normalized if missing
+                    if (not convocatoria.beneficiarios_normalizados or len(convocatoria.beneficiarios_normalizados) == 0) and extraction.tipos_beneficiario_normalized:
+                        convocatoria.beneficiarios_normalizados = extraction.tipos_beneficiario_normalized
+                        logger.info("Updated convocatoria beneficiarios_normalizados from LLM")
+                    # Backfill region_nuts if missing
+                    if (not convocatoria.region_nuts or len(convocatoria.region_nuts) == 0) and extraction.region_nuts:
+                        if isinstance(extraction.region_nuts, list):
+                            convocatoria.region_nuts = extraction.region_nuts
+                        else:
+                            convocatoria.region_nuts = [extraction.region_nuts]
+                        logger.info("Updated convocatoria region_nuts from LLM")
+
                     # Get pdf_url from staging_items if not already set
                     if not convocatoria.pdf_url:
                         stmt_staging = select(StagingItem).where(

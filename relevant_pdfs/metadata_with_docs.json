@@ -1,0 +1,538 @@
+[
+  {
+    "numeroConvocatoria": "870440",
+    "id": 1072001,
+    "descripcion": "Subvención nominativa a la Agrupació Recreativa de Les Peces 2025",
+    "fechaRecepcion": "2025-11-22",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-12-31",
+    "nivel1": "ALBINYANA",
+    "nivel2": "AYUNTAMIENTO DE ALBINYANA",
+    "categoria": "Cultura",
+    "pdf_file": "870440_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358281,
+        "descripcion": "Documento de la convocatoria en lengua cooficial",
+        "nombreFic": "Certificat.pdf",
+        "datMod": "2025-11-22",
+        "datPublicacion": "2025-11-22",
+        "file": "870440_1358281_Certificat.pdf"
+      },
+      {
+        "idDocumento": 1358280,
+        "descripcion": "Documento de la convocatoria en español",
+        "nombreFic": "certificado.pdf",
+        "datMod": "2025-11-22",
+        "datPublicacion": "2025-11-22",
+        "file": "870440_1358280_certificado.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870439",
+    "id": 1072000,
+    "descripcion": "SUBVENCION GERNIKA CLUB SD 2025",
+    "fechaRecepcion": "2025-11-22",
+    "fechaInicioSolicitud": null,
+    "fechaFinSolicitud": null,
+    "nivel1": "GERNIKA-LUMO",
+    "nivel2": "AYUNTAMIENTO DE GERNIKA-LUMO",
+    "categoria": "Cultura",
+    "pdf_file": "870439_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358293,
+        "descripcion": "Documento de la convocatoria en lengua cooficial",
+        "nombreFic": "25-1192.pdf",
+        "datMod": "2025-11-22",
+        "datPublicacion": "2025-11-22",
+        "file": "870439_1358293_25-1192.pdf"
+      },
+      {
+        "idDocumento": 1358294,
+        "descripcion": "Documento de la convocatoria en español",
+        "nombreFic": "25-1192.pdf",
+        "datMod": "2025-11-22",
+        "datPublicacion": "2025-11-22",
+        "file": "870439_1358294_25-1192.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870438",
+    "id": 1071999,
+    "descripcion": "SUBVENCION \"GURE ARBOLA ZAHARRA\" HIRUGARREN ADINEKO ELKARTEA 2025",
+    "fechaRecepcion": "2025-11-22",
+    "fechaInicioSolicitud": null,
+    "fechaFinSolicitud": null,
+    "nivel1": "GERNIKA-LUMO",
+    "nivel2": "AYUNTAMIENTO DE GERNIKA-LUMO",
+    "categoria": "Cultura",
+    "pdf_file": "870438_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358277,
+        "descripcion": "Documento de la convocatoria en lengua cooficial",
+        "nombreFic": "25-1188.pdf",
+        "datMod": "2025-11-22",
+        "datPublicacion": "2025-11-22",
+        "file": "870438_1358277_25-1188.pdf"
+      },
+      {
+        "idDocumento": 1358276,
+        "descripcion": "Documento de la convocatoria en español",
+        "nombreFic": "25-1188.pdf",
+        "datMod": "2025-11-22",
+        "datPublicacion": "2025-11-22",
+        "file": "870438_1358276_25-1188.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870436",
+    "id": 1071997,
+    "descripcion": "Financiar actuación de `Mátame, amor` de Ariana Harxicz, Eriva Rivas y Marilú Marini, el 26/10/2025, Teatro la Tía Norica",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-10-31",
+    "nivel1": "DIPUTACIÓN PROV. DE CÁDIZ",
+    "nivel2": "DIPUTACIÓN PROVINCIAL DE CÁDIZ",
+    "categoria": "Cultura",
+    "pdf_file": "870436_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358273,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "CONVENIO_-_2025_RCON_00921.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870436_1358273_CONVENIO_-_2025_RCON_00921.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870435",
+    "id": 1071996,
+    "descripcion": "subvencion nominativa Federación Provincial de Peñas actividades flamencas",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-12-31",
+    "nivel1": "DIPUTACIÓN PROV. DE CÁDIZ",
+    "nivel2": "DIPUTACIÓN PROVINCIAL DE CÁDIZ",
+    "categoria": "Cultura",
+    "pdf_file": "870435_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358272,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "10.CONVENIO_-_2025_RCON_00926.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870435_1358272_10.CONVENIO_-_2025_RCON_00926.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870434",
+    "id": 1071995,
+    "descripcion": "GASTOS DE CACHE XXIX FESTIVAL DE JERZ 21/02 Y CACHE 58 FIESTA DE LA BULERIA 23/08",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-08-31",
+    "nivel1": "DIPUTACIÓN PROV. DE CÁDIZ",
+    "nivel2": "DIPUTACIÓN PROVINCIAL DE CÁDIZ",
+    "categoria": "Cultura",
+    "pdf_file": "870434_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358271,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "CONVENIO_-_2025_RCON_00807.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870434_1358271_CONVENIO_-_2025_RCON_00807.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870431",
+    "id": 1071992,
+    "descripcion": "SUBVENCIÓN NOMINATIVA `ESCUELA DE MUSICA - TALLER DE MUSICA PARA PERSONAS MIGRANTES EN RIESGO DE EXCLUSIÓN SOCIAL`",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-09-16",
+    "fechaFinSolicitud": "2025-12-31",
+    "nivel1": "DIPUTACIÓN PROV. DE CÁDIZ",
+    "nivel2": "DIPUTACIÓN PROVINCIAL DE CÁDIZ",
+    "categoria": "Cultura",
+    "pdf_file": "870431_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358265,
+        "descripcion": "Aprobación Subvención a la Asociación Banda de Música de la Salud Barbate",
+        "nombreFic": "Decreto_Aprobación_Subvención.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870431_1358265_Decreto_Aprobación_Subvención.pdf"
+      },
+      {
+        "idDocumento": 1358264,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "CONVENIO_REGISTRADO.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870431_1358264_CONVENIO_REGISTRADO.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870426",
+    "id": 1071987,
+    "descripcion": "Subvención de concesión directa a favor de FUNDACIÓN TEATRO DE LA ABADÍA ",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-09-03",
+    "fechaFinSolicitud": "2025-09-16",
+    "nivel1": "ESTADO",
+    "nivel2": "MINISTERIO DE CULTURA",
+    "categoria": "Cultura",
+    "pdf_file": "870426_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358241,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "01 BOE-A-2025-17509.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870426_1358241_01 BOE-A-2025-17509.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870424",
+    "id": 1071985,
+    "descripcion": "Convocatòria anticipada de subvencions, en règim de concurrència competitiva, per a projectes de cultura comunitària com a element transformador de la societat, anualitats 2026 i 2027.",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-11-24",
+    "fechaFinSolicitud": "2026-01-19",
+    "nivel1": "DIPUTACIÓN PROV. DE GIRONA",
+    "nivel2": "DIPUTACIÓN PROVINCIAL DE GIRONA",
+    "categoria": "Cultura",
+    "pdf_file": "870424_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358238,
+        "descripcion": "Texto en otra lengua de la convocatoria",
+        "nombreFic": "CAT._Conv._projectes_cultura_comunitària_transformador_societat.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870424_1358238_CAT._Conv._projectes_cultura_comunitària_transformador_societat.pdf"
+      },
+      {
+        "idDocumento": 1358237,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "CAST_Conv._Cultura_Comunitària.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870424_1358237_CAST_Conv._Cultura_Comunitària.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870421",
+    "id": 1071982,
+    "descripcion": "Subvención de concesión directa a favor CIT-TOPIC-TOLOSA",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-09-03",
+    "fechaFinSolicitud": "2025-09-16",
+    "nivel1": "ESTADO",
+    "nivel2": "MINISTERIO DE CULTURA",
+    "categoria": "Cultura",
+    "pdf_file": "870421_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358232,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "01 BOE-A-2025-17509.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870421_1358232_01 BOE-A-2025-17509.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870419",
+    "id": 1071980,
+    "descripcion": "SN Asociación del pesebre viviente de l'Espluga de Francolí. Adquisición de la Casa de Cal San Joan",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-11-18",
+    "nivel1": "DIPUTACIÓN PROV. DE TARRAGONA",
+    "nivel2": "DIPUTACIÓN PROVINCIAL DE TARRAGONA",
+    "categoria": "Cultura",
+    "pdf_file": "870419_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358229,
+        "descripcion": "Texto en otra lengua de la convocatoria",
+        "nombreFic": "ACORD_6_8004330008_2025_0013434.PDF",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870419_1358229_ACORD_6_8004330008_2025_0013434.PDF"
+      },
+      {
+        "idDocumento": 1358228,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "DILIG__NCIA_4_8004330008_2025_0013434.PDF",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870419_1358228_DILIG__NCIA_4_8004330008_2025_0013434.PDF"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870411",
+    "id": 1071972,
+    "descripcion": "SUBVENCION NOMINATIVA AL OBISPADO DE ALMERÍA PARA LA REPARACIÓN DE LA ERMITA DE GÁDOR EN BERJA.",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": null,
+    "fechaFinSolicitud": null,
+    "nivel1": "BERJA",
+    "nivel2": "AYUNTAMIENTO DE BERJA",
+    "categoria": "Cultura",
+    "pdf_file": "870411_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358210,
+        "descripcion": "Documento de la convocatoria en español",
+        "nombreFic": "CERTIFICADO APROB. SUBV. NOMINATIVA AL OBISPADO DE ALMERÍA PARA REPARACIÓN DE LA ERMITA DE GÁDOR..pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": null,
+        "file": "870411_1358210_CERTIFICADO APROB. SUBV. NOMINATIVA AL OBISPADO DE ALMERÍA PARA REPARACIÓN DE LA ERMITA DE GÁDOR..pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870410",
+    "id": 1071971,
+    "descripcion": "CONVENIO CON EL ILMO. AYUNTAMIENTO DE TUINEJE PARA LA DIFUSIÓN Y FOMENTO DE LA ARTESANÍA.",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-11-20",
+    "nivel1": "CABILDO INSULAR DE FUERTEVENTURA",
+    "nivel2": "CABILDO INSULAR DE FUERTEVENTURA",
+    "categoria": "Cultura",
+    "pdf_file": "870410_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358218,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "RESOL._CONVENIO_AYTO._TUINEJE._DIFUSIÓN_Y_FOMENTO_DE_LA_ARTESANÍA.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870410_1358218_RESOL._CONVENIO_AYTO._TUINEJE._DIFUSIÓN_Y_FOMENTO_DE_LA_ARTESANÍA.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870409",
+    "id": 1071970,
+    "descripcion": "CONVENIO CON LA ASOCIACIÓN CULTURAL DE JUEGO DEL PALO CANARIO MAHO PARA EL DESARROLLO DEL PROYECTO DE INVESTIGACIÓN SOBRE EL JUEGO DEL PALO EN FUERTEVENTURA.",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-11-19",
+    "nivel1": "CABILDO INSULAR DE FUERTEVENTURA",
+    "nivel2": "CABILDO INSULAR DE FUERTEVENTURA",
+    "categoria": "Cultura",
+    "pdf_file": "870409_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358215,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "RESOL._CONVENIO_ASOC._CULTURAL_JUEGO_DEL_PALO_MAHOH._INVESTIGACIÓN_SOBRE_EL_JUEGO_DEL_PALO_EN_FUERTEVENTURA.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870409_1358215_RESOL._CONVENIO_ASOC._CULTURAL_JUEGO_DEL_PALO_MAHOH._INVESTIGACIÓN_SOBRE_EL_JUEGO_DEL_PALO_EN_FUERTEVENTURA.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870400",
+    "id": 1071961,
+    "descripcion": "SN Consells Comarcals. Archivos históricos comarcales. Actividades 2025. ",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-11-11",
+    "nivel1": "DIPUTACIÓN PROV. DE TARRAGONA",
+    "nivel2": "DIPUTACIÓN PROVINCIAL DE TARRAGONA",
+    "categoria": "Cultura",
+    "pdf_file": "870400_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358203,
+        "descripcion": "Texto en otra lengua de la convocatoria",
+        "nombreFic": "ACORD_6_8004330008_2025_0014755.PDF",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870400_1358203_ACORD_6_8004330008_2025_0014755.PDF"
+      },
+      {
+        "idDocumento": 1358202,
+        "descripcion": "Texto en castellano de la convocatoria",
+        "nombreFic": "DILIG__NCIA_2_8004330008_2025_0014755.PDF",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870400_1358202_DILIG__NCIA_2_8004330008_2025_0014755.PDF"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870395",
+    "id": 1071956,
+    "descripcion": "Decreto número 38118/2025, del 13 de noviembre, de la Tenencia de Alcaldía de Proyección de la Ciudad,\npor el que se aprueba el convenio de colaboración entre el Ayuntamiento de Terrassa y \"Amics de les Arts i\nJoventuts Musicals de Terrassa\"",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-11-13",
+    "nivel1": "TERRASSA",
+    "nivel2": "AJUNTAMENT DE TERRASSA",
+    "categoria": "Cultura",
+    "pdf_file": "870395_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358187,
+        "descripcion": "Documento de la convocatoria en español",
+        "nombreFic": "BDNS_Convocatoria78.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870395_1358187_BDNS_Convocatoria78.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870393",
+    "id": 1071954,
+    "descripcion": "SUBVENCION NOMINATIVA A ALHAMBRA TAURO GANIVET, S.L PARA CELEBRACIÓN DE LA CORRIDA DE TOROS EN LA FERIA DE BERJA 2025",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": null,
+    "fechaFinSolicitud": null,
+    "nivel1": "BERJA",
+    "nivel2": "AYUNTAMIENTO DE BERJA",
+    "categoria": "Cultura",
+    "pdf_file": "870393_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358188,
+        "descripcion": "Documento de la convocatoria en español",
+        "nombreFic": "CERTIFICADO APROB. SUBV. NOMINATIVA CORRIDA DE TOROS 2025.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": null,
+        "file": "870393_1358188_CERTIFICADO APROB. SUBV. NOMINATIVA CORRIDA DE TOROS 2025.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870351",
+    "id": 1071912,
+    "descripcion": "Bases y convocatoria de subvenciones para el desarrollo de los programas festivos de Hernani en 2026",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-11-28",
+    "fechaFinSolicitud": "2026-07-10",
+    "nivel1": "HERNANI",
+    "nivel2": "AYUNTAMIENTO DE HERNANI",
+    "categoria": "Cultura",
+    "pdf_file": "870351_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358111,
+        "descripcion": "Documento de la convocatoria en lengua cooficial",
+        "nombreFic": "DiruJaiakOinarriEus.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870351_1358111_DiruJaiakOinarriEus.pdf"
+      },
+      {
+        "idDocumento": 1358110,
+        "descripcion": "Documento de la convocatoria en español",
+        "nombreFic": "DiruJaiakOinarriElebi.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870351_1358110_DiruJaiakOinarriElebi.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870345",
+    "id": 1071906,
+    "descripcion": "Convenio entre el Ayuntamiento de Lasarte-Oria y ERKETZ EUSKAL DANTZARI TALDEA para la percepción de una subvención nominativa",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-12-31",
+    "nivel1": "LASARTE-ORIA",
+    "nivel2": "AYUNTAMIENTO DE LASARTE-ORIA",
+    "categoria": "Cultura",
+    "pdf_file": "870345_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358077,
+        "descripcion": "Documento de la convocatoria en español",
+        "nombreFic": "ERKETZ_Dekretua_sinatuta.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870345_1358077_ERKETZ_Dekretua_sinatuta.pdf"
+      },
+      {
+        "idDocumento": 1358082,
+        "descripcion": "Providencia/Probidentzia",
+        "nombreFic": "Erketz_probidentzia_sinatuta.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870345_1358082_Erketz_probidentzia_sinatuta.pdf"
+      },
+      {
+        "idDocumento": 1358079,
+        "descripcion": "Convenio/Hitzarmena",
+        "nombreFic": "Erketz_sinatuta.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870345_1358079_Erketz_sinatuta.pdf"
+      },
+      {
+        "idDocumento": 1358078,
+        "descripcion": "Documento de la convocatoria en lengua cooficial",
+        "nombreFic": "ERKETZ_Dekretua_sinatuta.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870345_1358078_ERKETZ_Dekretua_sinatuta.pdf"
+      }
+    ]
+  },
+  {
+    "numeroConvocatoria": "870336",
+    "id": 1071897,
+    "descripcion": "Convenio de colaboración entre la Fundación Apel·les fenosa y el Ayuntamiento del Vendrell para el año 2025.",
+    "fechaRecepcion": "2025-11-21",
+    "fechaInicioSolicitud": "2025-01-01",
+    "fechaFinSolicitud": "2025-12-31",
+    "nivel1": "VENDRELL, EL",
+    "nivel2": "AYUNTAMIENTO DE VENDRELL, EL",
+    "categoria": "Cultura",
+    "pdf_file": "870336_detalle.pdf",
+    "documentos": [
+      {
+        "idDocumento": 1358072,
+        "descripcion": "Documento de la convocatoria en lengua cooficial",
+        "nombreFic": "BDNS_CAT conveni 2025 Apelles Fenosa.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870336_1358072_BDNS_CAT conveni 2025 Apelles Fenosa.pdf"
+      },
+      {
+        "idDocumento": 1358071,
+        "descripcion": "Documento de la convocatoria en español",
+        "nombreFic": "BDNS_CAS convenio 2025 Apelles Fenosa.pdf",
+        "datMod": "2025-11-21",
+        "datPublicacion": "2025-11-21",
+        "file": "870336_1358071_BDNS_CAS convenio 2025 Apelles Fenosa.pdf"
+      }
+    ]
+  }
+]

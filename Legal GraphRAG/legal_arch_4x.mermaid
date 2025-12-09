@@ -1,0 +1,58 @@
+%%{init: {'theme':'base', 'themeVariables': {'fontSize':'48px', 'fontFamily':'arial', 'primaryColor':'#e3f2fd', 'primaryTextColor':'#000', 'primaryBorderColor':'#1976d2', 'lineColor':'#424242', 'secondaryColor':'#fff3e0', 'tertiaryColor':'#f3e5f5'}}}%%
+flowchart LR
+  %% SOURCES
+  subgraph S[Official sources]
+    BOE["<b>BOE</b><br/>Norms + consolidated texts<br/>(ELI / BOE-A-...)"]
+    CENDOJ["<b>CENDOJ (CGPJ)</b><br/>Jurisprudence<br/>(ECLI)"]
+    DGT["<b>PETETE / DGT</b><br/>Tax consultations<br/>(Vxxxx-yy)"]
+  end
+
+  %% INGEST
+  subgraph I[Ingestion & Normalization]
+    A1["<b>BOE Adapter</b><br/>API pull + deltas"]
+    A2["<b>CENDOJ Adapter</b><br/>(licensed/allowed mode)"]
+    A3["<b>DGT Adapter</b><br/>fetch consultas"]
+    N["<b>Normalizer</b><br/>canonical JSON + metadata"]
+    CE["<b>Citation Extractor</b><br/>ELI/BOE-A, ECLI, V-codes, article refs"]
+  end
+
+  %% STORAGE
+  subgraph D[Stores]
+    PG[("<b>Postgres</b><br/>Docs metadata + versions + edges")]
+    OBJ[("<b>Object store</b><br/>Raw docs + structured segments")]
+    G[("<b>Graph layer</b><br/>CITES / INTERPRETS / APPLIES")]
+  end
+
+  %% INDEX
+  subgraph X[Indexing]
+    BM25["<b>Lexical index (BM25)</b><br/>exact refs & terms"]
+    VDB["<b>Vector index</b><br/>semantic retrieval"]
+    RR["<b>Reranker</b><br/>cross-encoder / LLM"]
+  end
+
+  %% QUERY
+  subgraph Q[Runtime]
+    UI["<b>UI: Search + Document Viewer + Chat</b>"]
+    PL["<b>Query Planner</b><br/>(domain + intent + as-of date)"]
+    HY["<b>Hybrid Retrieval</b><br/>BM25 + Vector + filters"]
+    MC["<b>Multi-hop Expander</b><br/>BOE→(cases, DGT) via citations"]
+    ANS["<b>Answer Composer</b><br/>layered: BOE / CENDOJ / DGT<br/>with citations"]
+  end
+
+  BOE --> A1 --> N
+  CENDOJ --> A2 --> N
+  DGT --> A3 --> N
+  N --> CE
+  CE --> PG
+  N --> OBJ
+  CE --> G
+
+  PG --> BM25
+  PG --> VDB
+  OBJ --> VDB
+
+  UI --> PL --> HY
+  HY --> RR --> MC --> ANS --> UI
+
+  %% Compliance callout
+  CENDOJ -. restrictions on mass download/commercial reuse .-> A2

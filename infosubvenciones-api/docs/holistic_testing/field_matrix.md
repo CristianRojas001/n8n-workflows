@@ -1,0 +1,39 @@
+# Field Matrix for Holistic Testing
+
+This document provides a canonical list of fields to be validated during the holistic testing process. It maps each field to its source (API or PDF/LLM), its location in the database, and notes on how to perform validation.
+
+| Field Name                   | Source    | DB Table          | DB Column                       | Comparison Notes                                                                                             |
+| ---------------------------- | --------- | ----------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **--- IDENTIFICATION ---**   |           |                   |                                 |                                                                                                              |
+| Grant Title                  | API / PDF | `convocatorias`   | `titulo`                        | Exact match (string). PDF version in `pdf_extractions.titulo` is fallback.                                 |
+| Grant Number                 | API       | `convocatorias`   | `numero_convocatoria`           | Exact match (string). Should be present and unique.                                                          |
+| Granting Organization        | API / PDF | `convocatorias`   | `organismo`                     | Exact match (string). PDF version in `pdf_extractions.organismo`.                                            |
+| Geographic Scope             | API / PDF | `convocatorias`   | `ambito` / `regiones`           | Check for presence. `ambito` (e.g., "Nacional") and `regiones` (e.g., ["ES61", "ES62"]). PDF in `ambito_geografico`. |
+| **--- DATES ---**            |           |                   |                                 |                                                                                                              |
+| Publication Date             | API       | `convocatorias`   | `fecha_publicacion`             | Exact date match.                                                                                            |
+| Application Start Date       | API       | `convocatorias`   | `fecha_inicio_solicitud`        | Exact date match.                                                                                            |
+| Application End Date         | API       | `convocatorias`   | `fecha_fin_solicitud`           | Exact date match.                                                                                            |
+| Execution Period             | PDF       | `pdf_extractions` | `plazo_ejecucion`               | Semantic match. Check for keywords like "meses", "años", specific dates.                                     |
+| Justification Period         | PDF       | `pdf_extractions` | `plazo_justificacion`           | Semantic match. Check for keywords and dates.                                                                |
+| **--- AMOUNTS ---**          |           |                   |                                 |                                                                                                              |
+| Total Amount                 | API / PDF | `convocatorias`   | `importe_total`                 | Numeric match. API is string with currency. PDF (`cuantia_subvencion`) is text. Normalize and compare.       |
+| Max Amount per Project       | API / PDF | `convocatorias`   | `importe_maximo`                | Numeric match. Normalize and compare. PDF in `cuantia_max`.                                                  |
+| Aid Intensity                | PDF       | `pdf_extractions` | `intensidad_ayuda`              | Percentage match (e.g., "80%", "hasta el 50%").                                                              |
+| **--- BENEFICIARIES ---**    |           |                   |                                 |                                                                                                              |
+| Beneficiary Types            | API / PDF | `convocatorias`   | `tipos_beneficiario`            | Array inclusion. Check if ground truth types are in the DB array. PDF in `tipos_beneficiario_normalized`.    |
+| Beneficiary Description      | API / PDF | `convocatorias`   | `beneficiarios_descripcion`     | Semantic match. Check for key terms. PDF in `beneficiarios_descripcion_pdf`.                               |
+| Specific Beneficiary (if any)| PDF       | `pdf_extractions` | `beneficiario_nombre` / `beneficiario_cif` | Exact match for nominative grants.                                                                          |
+| **--- ELIGIBILITY & PURPOSE ---** |      |                   |                                 |                                                                                                              |
+| Purpose / Object             | API / PDF | `convocatorias`   | `objeto`                        | Semantic match. Check for keywords related to the grant's goal. PDF in `finalidad_pdf`.                      |
+| Eligible Expenses            | PDF       | `pdf_extractions` | `gastos_subvencionables`        | Keyword/list match. Compare lists of what is and is not eligible.                                          |
+| **--- REQUIREMENTS ---**     |           |                   |                                 |                                                                                                              |
+| Justification Method         | PDF       | `pdf_extractions` | `forma_justificacion`           | Semantic match. Look for terms like "cuenta justificativa", "módulos", "informe".                           |
+| Required Documentation       | PDF       | `pdf_extractions` | `documentacion_requerida`       | JSON/list comparison. Check for key documents like "memoria", "facturas", "certificados".                  |
+| Required Publicity           | PDF       | `pdf_extractions` | `publicidad_requerida`          | Semantic match. Check for requirements like logos, mentions in web/media.                                  |
+| Guarantees / Surety          | PDF       | `pdf_extractions` | `garantias` / `exige_aval`      | Semantic/boolean check. Look for keywords like "garantía", "aval", "fianza".                                |
+| **--- PDF & EXTRACTION ---** |           |                   |                                 |                                                                                                              |
+| PDF URL                      | API       | `convocatorias`   | `pdf_url`                       | URL validity check. Should link to a valid PDF.                                                              |
+| PDF Hash                     | System    | `convocatorias`   | `pdf_hash`                      | Exact match. Recalculate hash of the source PDF and compare.                                                 |
+| Extracted Summary            | PDF/LLM   | `pdf_extractions` | `extracted_summary`             | Length check (200-250 words). Semantic check for relevance to the PDF content.                               |
+| Extraction Confidence        | LLM       | `pdf_extractions` | `extraction_confidence`         | Range check (0 to 1). Should be populated.                                                                   |
+| Embedding Generated          | System    | `embeddings`      | `id` / `embedding_vector`       | Existence check. An embedding record should exist for each processed PDF. Vector should not be all zeros.    |

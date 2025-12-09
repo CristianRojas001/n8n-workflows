@@ -1,0 +1,49 @@
+# Editor and tooling
+.vscode/
+.claude/
+**/.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+**/.venv/
+env/
+venv/
+
+# Node / frontend
+node_modules/
+**/node_modules/
+dist/
+build/
+.next/
+.turbo/
+.vite/
+npm-debug.log*
+yarn-error.log*
+
+# Environment files (keep examples)
+.env
+.env.local
+.env.production
+.env.development
+.env.test
+Ingestion/.env
+interface/.env
+
+# Data, downloads, outputs
+outputs/
+downloads/
+relevant_pdfs/
+infosubvenciones-api-backup*.zip
+batch_extraction_results.json
+extracted_pdf_data.json
+token_estimation_results.xlsx
+token_estimation_results_NEW.xlsx
+
+# System
+.DS_Store
+Thumbs.db

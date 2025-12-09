@@ -1,0 +1,54 @@
+Here’s a detailed, Claude-ready analysis of the 20-PDF ingestion test (batch holistic20_20251207_112524) to guide fixes:
+
+What was tested
+
+PDFs: 20 sampled from relevant_pdfs, processed end-to-end (PDF download → text extract → Gemini → normalization → embeddings).
+Data compared: convocatorias vs pdf_extractions (6 key fields) + ground-truth templates in docs/holistic_testing/ground_truth/.
+Artifacts: db_exports/convocatorias_snapshot.csv, pdf_extractions_snapshot.csv, db_pdf_compare.csv, findings_ingestion.md, ingestion_log.md.
+Headline results
+
+Overall match (convocatorias vs pdf_extractions on 6 fields × 20): 49/120 = 40.8%.
+Major systemic gaps on convocatorias side: organismo (0/20), ambito (0/20), importe_total (2/20), importe_maximo (11/20), importe_minimo (18/20). Titles mostly OK (18/20).
+Concrete mismatches (conv null/missing vs PDF populated)
+
+865268: organismo null; PDF → Generalitat Valenciana. ambito null; PDF → Comunitat Valenciana. importe_total null; PDF → 7,000,000€.
+865440: organismo null; PDF → Excmo. Ayto. Alicante (Servicio de Fiestas). ambito null; PDF → Alicante. importe_total null; PDF → 124,000€.
+865496: organismo null; PDF → Ajuntament de Castelló. ambito null; PDF → Castelló. importe_total null; PDF → 18,200€ (min 1,000€, max 5,800€).
+866011: organismo null; PDF → Concello de Celanova. importe_total null; PDF → 1,200€.
+868847: importe_total empty both sides; long ordenanza—needs manual extraction.
+870202: importe_total empty both sides; national culture decree—needs manual extraction.
+Others follow the same pattern: conv fields null while PDF extraction is populated.
+Ground-truth status (for manual verification)
+
+Manual-filled narrative files: 865154, 865168, 865210, 865232, 865259, 865279, 865309, 865392, 865438, 865455.
+Table-style files auto-filled from pdf_extractions; remaining blanks reflect missing extraction values. Lowest fill (needs manual PDF review): 870202, 868377, 868847. Higher fill (mostly populated): 866867, 869156, 867308, 867823.
+Likely root causes
+
+API detail lacks organism/ambito/amounts for many nominative/ordinance docs (convocatorias left null).
+Amounts expressed in prose or as multiple sums (e.g., 865496) aren’t normalized into numeric conv fields.
+ambito not derived/normalized from PDF scope.
+Some long/complex PDFs (ordenanzas/decretos) need manual anchoring for totals/scope.
+Actionable steps for Claude to fix
+
+Backfill conv fields from PDF extraction when API is null:
+organismo ← pdf_extractions.organismo (when conv null).
+ambito ← pdf_extractions.ambito_geografico (when conv null).
+importe_total ← pdf_extractions.importe_total_pdf (when conv null).
+importe_maximo/importe_minimo ← pdf_extractions.cuantia_max / cuantia_min (when conv null).
+Add a flag or log for “backfilled from PDF” to keep provenance clear.
+Amount normalization improvements:
+Parse prose sums (e.g., “2.500,00 + … = 18.200,00”) into numeric totals.
+Standardize decimals and thousands separators; strip currency symbols before comparison.
+Ambito normalization:
+Derive standardized ambito (local/municipal/provincial/autonomic/national) from pdf_extractions.ambito_geografico and region mentions; backfill conv.ambito when missing.
+QA loop:
+After backfill, re-run the diff (db_pdf_compare.csv equivalent) to confirm fields align; log any remaining mismatches in findings_ingestion.md with root-cause tags (API missing, normalization needed, ambiguous).
+Manual verification for tough cases:
+870202 (national decree), 868847 (long ordenanza), 868377 (short notice) to ensure totals/scope are accurate; update ground_truth/*.md and rerun comparison.
+Files/paths to use
+
+Ingestion log: docs/holistic_testing/db_exports/ingestion_log.md
+Snapshots: docs/holistic_testing/db_exports/convocatorias_snapshot.csv, pdf_extractions_snapshot.csv
+Diff: docs/holistic_testing/db_exports/db_pdf_compare.csv
+Findings: docs/holistic_testing/findings_ingestion.md
+Ground truth: docs/holistic_testing/ground_truth/*.md (table-style files show remaining blanks; narrative files are already filled)

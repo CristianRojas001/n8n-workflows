@@ -1,0 +1,29 @@
+%%{init: {'theme':'base', 'themeVariables': {'fontSize':'48px', 'fontFamily':'arial', 'primaryColor':'#e8f5e9', 'primaryTextColor':'#000', 'primaryBorderColor':'#388e3c', 'lineColor':'#424242', 'secondaryColor':'#fff3e0', 'tertiaryColor':'#e1f5fe'}}}%%
+flowchart TB
+  subgraph BOE_L[BOE = Normative layer]
+    NORM["<b>Norm (ELI / BOE-A-...)</b>"]
+    VER["<b>Version / redacción</b><br/>(as-of date)"]
+    ART["<b>Article / section</b>"]
+    NORM --> VER --> ART
+  end
+
+  subgraph CEN_L[CENDOJ = Jurisprudence layer]
+    CASE["<b>Decision (ECLI)</b>"]
+    HOLD["<b>Key reasoning / holding</b>"]
+    CASE --> HOLD
+  end
+
+  subgraph DGT_L[DGT/PETETE = Admin doctrine layer]
+    CON["<b>Consulta (Vxxxx-yy)</b>"]
+    FACTS["<b>Facts</b>"]
+    QUES["<b>Question</b>"]
+    CRIT["<b>Criterion / answer</b><br/>(effects per LGT art. 89)"]
+    CON --> FACTS
+    CON --> QUES
+    CON --> CRIT
+  end
+
+  HOLD -- interprets/applies --> ART
+  CRIT -- cites/applies --> ART
+  CASE -- cites --> NORM
+  CON -- cites --> NORM
