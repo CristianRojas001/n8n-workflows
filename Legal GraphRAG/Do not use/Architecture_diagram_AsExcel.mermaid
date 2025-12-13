@@ -1,0 +1,67 @@
+flowchart TD
+%% USER
+U[User\n(Artist / Studio / Platform)] --> QAPI[Query API\n(HTTP / chat)]
+%% PLANNER
+QAPI --> PL[Query Planner\n(intent, domain, date)]
+PL -->|decide domains, pillars, priority| RTLV[Retrieval Layer]
+%% CATALOG & GOVERNANCE
+subgraph GOV[Layer 1 - Corpus Catalog & Governance]
+    CFG[corpus_sources\n(from Excel)]
+    CFG -->|controls| ING
+    CFG -->|controls| RTLV
+end
+%% INGESTION + NORMALIZATION
+subgraph ING[Layer 2 - Ingestion & Normalization]
+    subgraph CONN[Source Connectors]
+        BOE[BOE\nSpanish legislation]
+        DOUE[DOUE / EUR-Lex\nEU law]
+        CENDOJ[CENDOJ\nCase law ES]
+        DGT[DGT / PETETE\nTax doctrine]
+        AEAT[AEAT\nCriterios, FAQs]
+        SS[INSS / TGSS\nBulletins, criteria]
+        CULT[ICAA / Cultura\nGuides, criteria]
+        TJUE[TJUE / TEDH\nEU / ECHR case law]
+    end
+    NORML[Normalizer\n(unify schema)]
+    CITE[Citation Extractor\n(articles, ECLI, Vxxxx-yy)]
+end
+BOE --> NORML
+DOUE --> NORML
+CENDOJ --> NORML
+DGT --> NORML
+AEAT --> NORML
+SS --> NORML
+CULT --> NORML
+TJUE --> NORML
+NORML --> CITE
+%% STORAGE + GRAPH
+subgraph STOR[Layer 3 - Storage & Graph]
+    DOCS[(Document Store\n(JSON + text spans))]
+    META[(Metadata DB\n(Postgres))]
+    GRAPH[(Graph Edges\n(cites, interprets, transposes))]
+end
+CITE --> DOCS
+CITE --> META
+CITE --> GRAPH
+%% INDEXING + RETRIEVAL
+subgraph IDX[Layer 4 - Indexing & Retrieval]
+    NIDX[(Norms Index\nBM25 + vectors)]
+    DIDX[(Doctrine Index)]
+    JIDX[(Jurisprudence Index)]
+    RER[Reranker\n(cross-encoder / LLM)]
+end
+DOCS --> NIDX
+DOCS --> DIDX
+DOCS --> JIDX
+META --> RTLV
+GRAPH --> RTLV
+RTLV -->|hybrid search\n+ graph expansion| NIDX
+RTLV --> DIDX
+RTLV --> JIDX
+NIDX --> RER
+DIDX --> RER
+JIDX --> RER
+RER --> AC[Answer Composer\n(LLM, grounded)]
+%% ANSWER
+AC --> OUT[Structured Answer\n(Normativa -> Doctrina -> Jurisprudencia\n+ citations)]
+OUT --> QAPI
